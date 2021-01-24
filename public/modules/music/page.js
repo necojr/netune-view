@@ -88,13 +88,23 @@ yum.define([
                     app.addPage(page);
                 },
 
-                '(app) save:music'(musica){
-                    this.set(musica);
+                '(app) save:music'(musica) {
+                    if (this.musica.id == musica.id) {
+                        this.set(musica);
+                        app.omni.trigger('update:musica', app.workspace.name, musica);
+                    }
                 },
 
                 '(app.omni) new:tom'(musica) {
                     if (this.musica.id == musica.id) {
                         this.updateTom(musica.tom);
+                    }
+                },
+
+                '(app.omni) update:musica'(musica) {
+                    if (this.musica.id == musica.id) {
+                        this.musica.inject(musica);
+                        this.set(this.musica);
                     }
                 },
 
