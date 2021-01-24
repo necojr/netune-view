@@ -39,7 +39,7 @@ Pi.Object.extractProperty = function (obj, property) {
     let p = property.split('.');
 
     if (p.length > 1) {
-        for (let i = 0; i < p.length - 1; i++) {
+        for (let i = 0; i < p.length; i++) {
             let m = p[i];
             if (obj[m] == undefined) obj[m] = {};
             obj = obj[m];

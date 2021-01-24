@@ -5,14 +5,18 @@ yum.define([
     Pi.Url.create('Music', '/page.js'),
     Pi.Url.create('Workspace', '/model.js'),
     Pi.Url.create('Music', '/editor.js'),
-    Pi.Url.create('Music', '/model.js')
+    Pi.Url.create('Music', '/model.js'),
+    Pi.Url.create('Omni', '/client.js')
 ], function () {
 
     class App extends Pi.App {
         
         instances() {
             this.pages = [];
+
             this.workspace = new Workspace.Model();
+
+            this.omni = new Omni.Client();
         }
 
         viewDidLoad() {
@@ -48,8 +52,11 @@ yum.define([
 
         loadWorkspace() {
             this.workspace.current().ok((workspace) => {
+                this.workspace = workspace;
                 this.musicList.clear();
                 this.musicList.load(workspace.musicas);
+
+                this.omni.open();
             });
         }
 
@@ -89,6 +96,10 @@ yum.define([
                     this.addPage(new Music.Editor({
                         musica: new Music.Model()
                     }));
+                },
+
+                '{omni} connected'(){
+                    this.omni.enter(this.workspace.name);
                 },
 
                 '{this} save:music'() {

@@ -28,10 +28,15 @@ Pi.App.config({
         'Music': {base: 'Modules', url: '/music'},
         'Lexicon': { base: 'Modules', url: '/lexicon' },
         'Workspace': { base: 'Modules', url: '/workspace' },
+        'Omni': { base: 'Vendor', url: '/omni' },
     },
 
     netune: {
         api: 'http://api.ministerioatos239.local'
+    },
+
+    omni: {
+        url: 'ws://localhost:775'
     },
 
     services: ['Music']

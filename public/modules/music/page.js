@@ -49,6 +49,12 @@ yum.define([
             this.musica.tom = newTom;
             this.musica.save();
 
+            this.updateTom(newTom);
+
+            app.omni.trigger('new:tom', app.workspace.name, this.musica);
+        }
+
+        updateTom(newTom){
             this.lyrics.trocarTom(newTom);
             this.slider.load(this.lyrics);
             this.musica.lyrics = this.lyrics.text;
@@ -84,6 +90,12 @@ yum.define([
 
                 '(app) save:music'(musica){
                     this.set(musica);
+                },
+
+                '(app.omni) new:tom'(musica) {
+                    if (this.musica.id == musica.id) {
+                        this.updateTom(musica.tom);
+                    }
                 },
 
                 '#youtube click'() {
