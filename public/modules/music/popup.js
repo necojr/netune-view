@@ -72,7 +72,13 @@ yum.define([
 
         load(){
             var model = new Music.Model();
-            model.all().ok(this._list.load, this._list);
+            
+            app.loading(true);
+            model.all().ok((musicas) => {
+                app.loading(false);
+
+                this._list.load(musicas);
+            });
         }
 
         createPopup() {

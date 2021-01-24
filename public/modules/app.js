@@ -84,6 +84,13 @@ yum.define([
             window.location = '#';
         }
 
+        loading(b) {
+            if (b) app.f7.preloader.show();
+            else app.f7.preloader.hide();
+
+            return this;
+        }
+
         events(listen) {
             super.events(listen);
 

@@ -69,7 +69,10 @@ yum.define([
                             this.musica.versao = 'Original';
                         }
 
+                        app.loading(true);
                         this.musica.save().ok(() => {
+                            app.loading(false);
+                            
                             app.event.trigger('save:music', this.musica);
                             app.popPage();
                         });
