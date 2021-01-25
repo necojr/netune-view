@@ -19,20 +19,25 @@ yum.define([
             var text = [];
 
             text.push(`nome\n${this.titulo}`);
-            text.push(`\nversao\n${this.versao}\n`);
+            text.push(`\n\nversao\n${this.versao}`);
 
             for (let i = 0; i < this._tokens.length; i++) {
                 const token = this._tokens[i];
                 const key = token.key.replace(/\d+/gi, '');
+                const value = token.value;
 
-                if (token.value.length == 0) {
-                    text.push(`\n${key}`);
+                if (token.isTitle) {
+                    text.push(`\n\n${key}`);
+
+                    if (value.length > 0) {
+                        text.push(`\n${value}`);
+                    }
                 } else {
-                    text.push(`${key}\n${token.value}`);
+                    text.push(`\n${key}\n${value}`);
                 }
             }
 
-            return text.join('\n');
+            return text.join('');
         }
 
         trocarTom(newTom) {

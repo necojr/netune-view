@@ -46,10 +46,10 @@ yum.define([
         }
 
         trocarTom(newTom) {
+            this.updateTom(newTom);
+
             this.musica.tom = newTom;
             this.musica.save();
-
-            this.updateTom(newTom);
 
             app.omni.trigger('new:tom', app.workspace.name, this.musica);
         }

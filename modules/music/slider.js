@@ -122,11 +122,17 @@ yum.define([
         }
 
         createSlide(text){
-            this.view.get('slides').append(`<div class="swiper-slide"><pre>${text}</pre></div>`);
+            this.view.get('slides').append(`<div class="swiper-slide" style="background: #fff"><pre>${text}</pre></div>`);
         }
 
         createSwiper(){
             this._swiper = app.f7.swiper.create('#' + this.view.id, {
+                // effect: 'cube',
+                loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    type: 'bullets',
+                },
                 // direction: 'vertical',
                 // pagination: '.swiper-pagination'
             });
