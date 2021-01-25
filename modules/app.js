@@ -4,14 +4,6 @@ yum.define([
 
     class App extends Pi.App {
 
-        instances() {
-            this.pages = [];
-
-            this.workspace = new Workspace.Model();
-
-            this.omni = new Omni.Client();
-        }
-
         viewDidLoad() {
             this.initFramework7();
             this.loadModules();
@@ -33,9 +25,16 @@ yum.define([
             ], () => {
                 app.loading(false);
 
+                this.initInstances();
                 this.initComponents();
                 this.loadWorkspace();
             });
+        }
+
+        initInstances() {
+            this.pages = [];
+            this.workspace = new Workspace.Model();
+            this.omni = new Omni.Client();
         }
 
         initFramework7() {
