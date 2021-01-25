@@ -59,8 +59,11 @@ yum.define([
                 'G#': ['G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G']
             };
 
-            var oldNotes = escalaMaiorNatural[this._tom];
-            var newNotes = escalaMaiorNatural[newTom];
+            var oldNotes = escalaMaiorNatural[this._tom.toUpperCase()];
+            if (oldNotes == null) return;
+            
+            var newNotes = escalaMaiorNatural[newTom.toUpperCase()];
+            if (newNotes == null) return;
 
             for (let i = 0; i < this._tokens.length; i++) {
                 const token = this._tokens[i];
@@ -114,7 +117,7 @@ yum.define([
         }
 
         get tom() {
-            return this._tom || '';
+            return (this._tom || '').toUpperCase();
         }
 
         set versao(value) {
