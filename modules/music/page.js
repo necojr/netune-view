@@ -51,7 +51,7 @@ yum.define([
             this.musica.tom = newTom;
             this.musica.save();
 
-            app.omni.trigger('new:tom', app.workspace.name, this.musica);
+            app.omni.trigger('new:tom', app.omniGroupName, this.musica);
         }
 
         updateTom(newTom){
@@ -91,7 +91,7 @@ yum.define([
                 '(app) save:music'(musica) {
                     if (this.musica.id == musica.id) {
                         this.set(musica);
-                        app.omni.trigger('update:musica', app.workspace.name, musica);
+                        app.omni.trigger('update:musica', app.omniGroupName, musica);
                     }
                 },
 

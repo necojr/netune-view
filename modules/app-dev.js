@@ -111,7 +111,7 @@ yum.define([
             this.workspace.save().done(() => {
                 this.loading(false);
 
-                this.omni.trigger('reload:workspace', this.workspace);
+                this.omni.trigger('reload:workspace', this.omniGroupName, this.workspace);
             }).error(() => {
                 app.notification('Atenção!', 'Sem conexão com a internet');
             });
@@ -132,7 +132,7 @@ yum.define([
                 },
 
                 '{omni} connected'() {
-                    this.omni.enter('netune:cifras');
+                    this.omni.enter(this.omniGroupName);
                 },
 
                 '{omni} reload:workspace'(workspace) {

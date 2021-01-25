@@ -26,6 +26,13 @@ yum.define([
             });
         }
 
+        leave(group){
+            this.send({
+                type: 'omni.unlisten',
+                group: group
+            });
+        }
+
         connect() {
             if (this.status == Omni.ClientStatus.CONNECTED) return;
 
