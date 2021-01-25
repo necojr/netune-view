@@ -1,4 +1,4 @@
-const staticNetune = 'netune-v1.0';
+const staticNetune = 'netune-v2.0';
 const assets = [
     '/index.html',
     '/css/app.css',
