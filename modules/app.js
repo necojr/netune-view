@@ -27,6 +27,8 @@ yum.define([
 
                 this.initInstances();
                 this.initComponents();
+                this.initEvents();
+                
                 this.loadWorkspace();
             });
         }
@@ -57,6 +59,12 @@ yum.define([
             });
 
             this.musicList.render(this.view.get('musicList'));
+        }
+
+        initEvents(){
+            document.addEventListener('backbutton', () => {
+                this.popPage();
+            });
         }
 
         loadWorkspace() {
@@ -91,6 +99,7 @@ yum.define([
         }
 
         popPage() {
+            if (this.currentPage == null) return;
             this.currentPage.destroy();
             this.pages.pop();
             window.location = '#';
