@@ -85,7 +85,7 @@ yum.define([
                     rows.push({
                         isMoveable: true,
                         isBreakable: true,
-                        content: `\n<span style="background-color: #ffff00;color: #333; font-weight: bold;">${token.key}</span>`
+                        content: `\n<span style="padding: 0 20px; background-color: #ffff00;color: #333; font-weight: bold;">${token.key}</span>`
                     });
 
                     if (token.value.length > 0) {
