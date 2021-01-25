@@ -1,16 +1,9 @@
 yum.define([
-    Pi.Url.create('Music', '/list.js'),
-    Pi.Url.create('Music', '/choose.js'),
-    Pi.Url.create('Music', '/popup.js'),
-    Pi.Url.create('Music', '/page.js'),
-    Pi.Url.create('Workspace', '/model.js'),
-    Pi.Url.create('Music', '/editor.js'),
-    Pi.Url.create('Music', '/model.js'),
-    Pi.Url.create('Omni', '/client.js')
+
 ], function () {
 
     class App extends Pi.App {
-        
+
         instances() {
             this.pages = [];
 
@@ -21,11 +14,28 @@ yum.define([
 
         viewDidLoad() {
             this.initFramework7();
-            this.initComponents();
-
-            this.loadWorkspace();
+            this.loadModules();
 
             super.viewDidLoad();
+        }
+
+        loadModules() {
+            app.loading(true);
+            yum.download([
+                Pi.Url.create('Music', '/list.js'),
+                Pi.Url.create('Music', '/choose.js'),
+                Pi.Url.create('Music', '/popup.js'),
+                Pi.Url.create('Music', '/page.js'),
+                Pi.Url.create('Workspace', '/model.js'),
+                Pi.Url.create('Music', '/editor.js'),
+                Pi.Url.create('Music', '/model.js'),
+                Pi.Url.create('Omni', '/client.js')
+            ], () => {
+                app.loading(false);
+
+                this.initComponents();
+                this.loadWorkspace();
+            });
         }
 
         initFramework7() {
@@ -51,7 +61,10 @@ yum.define([
         }
 
         loadWorkspace() {
+            app.loading(true);
             this.workspace.current().ok((workspace) => {
+                app.loading(false);
+
                 this.workspace = workspace;
                 this.musicList.clear();
                 this.musicList.load(workspace.musicas);
@@ -99,13 +112,13 @@ yum.define([
                     this.musicPopup.open();
                 },
 
-                '#createMusic click'(){
+                '#createMusic click'() {
                     this.addPage(new Music.Editor({
                         musica: new Music.Model()
                     }));
                 },
 
-                '{omni} connected'(){
+                '{omni} connected'() {
                     this.omni.enter(this.workspace.name);
                 },
 

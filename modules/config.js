@@ -32,11 +32,11 @@ Pi.App.config({
     },
 
     netune: {
-        api: 'http://api.ministerioatos239.local'
+        api: 'https://api.ministerioatos239.com.br'
     },
 
     omni: {
-        url: 'ws://localhost:775'
+        url: 'wss://omni.ministerioatos239.com.br:775'
     },
 
     services: ['Music']
