@@ -5,7 +5,7 @@ from css_html_js_minify import js_minify, css_minify
 from bottle import route, run, request, response, static_file
 
 def savefile(filename, content):
-    f = open(filename, "w")
+    f = open(filename, "w", encoding="utf-8")
     f.write(content)
     f.close()
 
