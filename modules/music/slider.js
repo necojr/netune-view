@@ -6,7 +6,7 @@ yum.define([
 
         instances() {
             this.view = new Pi.View(`<div class="swiper-container">
-                <div class="swiper-pagination swiper-pagination-bullets"></div>
+                <div class="swiper-pagination swiper-pagination-bullets" style="bottom: 0px;"></div>
                 <!-- Slides wrapper -->
                 <div class="swiper-wrapper" id="slides"></div>
             </div>`
