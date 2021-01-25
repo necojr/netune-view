@@ -25,6 +25,7 @@ yum.define([
             ], () => {
                 app.loading(false);
 
+                this.removeSplash();
                 this.initInstances();
                 this.initComponents();
                 this.initEvents();
@@ -45,6 +46,12 @@ yum.define([
                 name: 'Netune',
                 id: 'br.com.atos239.netune',
             });
+        }
+
+        removeSplash(){
+            this.view.get('pages').show();
+            this.view.get('initialize').hide();
+            document.body.classList.add('wallpaper-01');
         }
 
         initComponents() {
