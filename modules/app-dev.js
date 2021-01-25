@@ -22,7 +22,7 @@ yum.define([
         viewDidLoad() {
             this.initFramework7();
             this.initComponents();
-            
+
             this.loadWorkspace();
 
             super.viewDidLoad();
@@ -94,6 +94,28 @@ yum.define([
             return this;
         }
 
+        notification(title, subtitle = '', message = '') {
+            var n = app.f7.notification.create({
+                title: title,
+                subtitle: subtitle,
+                text: message,
+                closeButton: true,
+            });
+
+            n.open();
+        }
+
+        saveWorkspace() {
+            this.workspace.musicas = this.musicList.get();
+
+            this.loading(true);
+            this.workspace.save().done(() => {
+                this.loading(false);
+            }).error(() => {
+                app.notification('Atenção!', 'Sem conexão com a internet');
+            });
+        }
+
         events(listen) {
             super.events(listen);
 
@@ -119,13 +141,11 @@ yum.define([
                 '{musicPopup} choose'(musicas) {
                     this.musicList.load(musicas);
 
-                    this.workspace.musicas = this.musicList.get();
-                    this.workspace.save();
+                    this.saveWorkspace();
                 },
 
                 '{musicList} delete'() {
-                    this.workspace.musicas = this.musicList.get();
-                    this.workspace.save();
+                    this.saveWorkspace();
                 },
 
                 '{musicList} select'(musica) {

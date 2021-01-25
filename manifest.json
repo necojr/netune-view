@@ -1,9 +1,9 @@
 {
-    "name": "Netune Cifra",
+    "name": "Netune Cifras",
     "short_name": "Netune",
     "start_url": "index.html",
     "display": "standalone",
-    "background_color": "#fdfdfd",
+    "background_color": "#6200ee",
     "theme_color": "#6200ee",
     "orientation": "portrait-primary",
     "icons": [

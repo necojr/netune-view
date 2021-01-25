@@ -104,6 +104,28 @@ yum.define([
             return this;
         }
 
+        notification(title, subtitle = '', message = '') {
+            var n = app.f7.notification.create({
+                title: 'Atenção!',
+                subtitle: 'Cifra não esta formatada corretamente',
+                text: error,
+                closeButton: true,
+            });
+
+            n.open();
+        }
+
+        saveWorkspace() {
+            this.workspace.musicas = this.musicList.get();
+            
+            this.loading(true);
+            this.workspace.save().done(() => {
+                this.loading(false);
+            }).error(() => {
+                app.notification('Atenção!', 'Sem conexão com a internet');
+            });
+        }
+
         events(listen) {
             super.events(listen);
 
@@ -129,19 +151,17 @@ yum.define([
                 '{musicPopup} choose'(musicas) {
                     this.musicList.load(musicas);
 
-                    this.workspace.musicas = this.musicList.get();
-                    this.workspace.save();
+                    this.saveWorkspace();
                 },
 
                 '{musicList} delete'() {
-                    this.workspace.musicas = this.musicList.get();
-                    this.workspace.save();
+                    this.saveWorkspace();
                 },
 
                 '{musicList} select'(musica) {
                     this.addPage(new Music.Page({
                         musica: musica
-                    }))
+                    }));
                 }
             });
         }

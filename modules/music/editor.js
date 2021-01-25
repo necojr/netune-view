@@ -71,21 +71,16 @@ yum.define([
 
                         app.loading(true);
                         this.musica.save().ok(() => {
-                            app.loading(false);
-                            
                             app.event.trigger('save:music', this.musica);
                             app.popPage();
+                        }).error(() => {
+                            app.notification('Atenção!', 'Sem conexão com a internet');
+                        }).done(() => {
+                            app.loading(false);
                         });
 
                     } catch (error) {
-                        var n = app.f7.notification.create({
-                            title: 'Atenção!',
-                            subtitle: 'Cifra não esta formatada corretamente',
-                            text: error,
-                            closeButton: true,
-                        });
-
-                        n.open();
+                        app.notification('Atenção!', 'Cifra não esta formatada corretamente', error);
                     }
                 },
 
