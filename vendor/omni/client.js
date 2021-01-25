@@ -2,6 +2,11 @@ yum.define([
 
 ], function () {
 
+    Pi.Export('Omni.ClientStatus', {
+        OPENED: 0,
+        CONNECTED: 1,
+    });
+        
     class Client extends Pi.Class {
 
         instances() {
@@ -10,6 +15,8 @@ yum.define([
             this.event = new Pi.Event();
             this._cn = null;
             this.url = '';
+
+            this.status = Omni.ClientStatus.OPENED;
         }
 
         enter(group){
@@ -19,7 +26,9 @@ yum.define([
             });
         }
 
-        open() {
+        connect() {
+            if (this.status == Omni.ClientStatus.CONNECTED) return;
+
             this._cn = new WebSocket(App.getConfig('omni.url') || this.url);
             this.listen();
         }
@@ -29,6 +38,7 @@ yum.define([
                 var payload = JSON.parse(e.data);
 
                 if (payload.type == 'ommi.connected') {
+                    this.status = Omni.ClientStatus.CONNECTED;
                     this.event.trigger('connected');
                     return;
                 }

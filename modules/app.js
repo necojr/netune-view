@@ -4,6 +4,13 @@ yum.define([
 
     class App extends Pi.App {
 
+        instances(){
+            this.pages = [];
+
+            this.omni = new Omni.Client();
+            this.omni.connect();
+        }
+
         viewDidLoad() {
             this.initFramework7();
             this.loadModules();
@@ -35,9 +42,7 @@ yum.define([
         }
 
         initInstances() {
-            this.pages = [];
             this.workspace = new Workspace.Model();
-            this.omni = new Omni.Client();
         }
 
         initFramework7() {
@@ -82,8 +87,6 @@ yum.define([
                 this.workspace = workspace;
                 this.musicList.clear();
                 this.musicList.load(workspace.musicas);
-
-                this.omni.open();
             });
         }
 
@@ -136,6 +139,8 @@ yum.define([
             this.loading(true);
             this.workspace.save().done(() => {
                 this.loading(false);
+
+                this.omni.trigger('reload:workspace', this.workspace);
             }).error(() => {
                 app.notification('Atenção!', 'Sem conexão com a internet');
             });
@@ -156,7 +161,13 @@ yum.define([
                 },
 
                 '{omni} connected'() {
-                    this.omni.enter(this.workspace.name);
+                    this.omni.enter('netune:cifras');
+                },
+
+                '{omni} reload:workspace'(workspace) {
+                    if (this.workspace.id == workspace.id) {
+                        this.loadWorkspace();
+                    }
                 },
 
                 '{this} save:music'() {
