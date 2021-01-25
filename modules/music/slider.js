@@ -6,7 +6,7 @@ yum.define([
 
         instances() {
             this.view = new Pi.View(`<div class="swiper-container">
-                <div class="swiper-pagination"></div>
+                <div class="swiper-pagination swiper-pagination-bullets"></div>
                 <!-- Slides wrapper -->
                 <div class="swiper-wrapper" id="slides"></div>
             </div>`
@@ -85,7 +85,7 @@ yum.define([
                     rows.push({
                         isMoveable: true,
                         isBreakable: true,
-                        content: `\n<span style="padding: 0px 20px; background-color: #ffff00;color: #333; font-weight: bold;">${token.key}</span>`
+                        content: `\n<span style="background-color: #ffff00;color: #333; font-weight: bold;">${token.key}</span>`
                     });
 
                     if (token.value.length > 0) {
@@ -122,7 +122,7 @@ yum.define([
         }
 
         createSlide(text){
-            this.view.get('slides').append(`<div class="swiper-slide" style="padding: 0px 20px;"><pre>${text}</pre></div>`);
+            this.view.get('slides').append(`<div class="swiper-slide"><pre>${text}</pre></div>`);
         }
 
         createSwiper(){

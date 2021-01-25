@@ -4,6 +4,11 @@ import bottle
 from css_html_js_minify import js_minify, css_minify
 from bottle import route, run, request, response, static_file
 
+def savefile(filename, content):
+    f = open(filename, "w")
+    f.write(content)
+    f.close()
+
 @route('/minify/js', method=['POST', 'OPTIONS'])
 def minify_js():
     content = ''
@@ -12,6 +17,10 @@ def minify_js():
     for url in urls:
         r = requests.get(url)
         content += r.text
+
+    content = "window.appWillLaunch = function () {yum.enable(false);%s};" % js_minify(content)
+
+    savefile('js/app.js', content)
 
     return js_minify(content)
 

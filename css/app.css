@@ -91,6 +91,10 @@
     background: #666
 }
 
+.swiper-slide-active{
+    padding: 0 20px;
+}
+
 .wallpaper-01 {
     background-image: url('../images/wallpaper-02.jpg');
     height: 100%;
