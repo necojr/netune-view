@@ -113,7 +113,7 @@ yum.define([
         }
 
         get versao() {
-            return this._versao || '';
+            return this._versao || 'Original';
         }
 
         get tom() {

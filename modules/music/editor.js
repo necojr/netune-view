@@ -64,11 +64,7 @@ yum.define([
                         if (this.musica.tom.length == 0) {
                             throw 'Informe o tom da música';
                         }
-
-                        if (this.musica.versao.length == 0) {
-                            this.musica.versao = 'Original';
-                        }
-
+                        
                         app.loading(true);
                         this.musica.save().ok(() => {
                             app.event.trigger('save:music', this.musica);
