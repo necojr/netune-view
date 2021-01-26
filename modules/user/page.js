@@ -22,8 +22,8 @@ yum.define([
                     </div>
                 </div>
                 <div class="page-content">
-                    <div class="block">
-                        <ul class="list">
+                    <div class="">
+                        <ul class="list" style="padding: 0px;">
                             <li class="item-content item-input">
                                 <div class="item-inner">
                                     <div class="item-title item-label">
