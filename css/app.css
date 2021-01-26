@@ -96,9 +96,25 @@
 }
 
 .wallpaper-01 {
+    background-image: url('../images/wallpaper-01.jpg');
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wallpaper-02 {
     background-image: url('../images/wallpaper-02.jpg');
     height: 100%;
     background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wallpaper-05 {
+    background-image: url('../images/wallpaper-05.jpg');
+    height: 100%;
+    background-position: -10px;
     background-repeat: no-repeat;
     background-size: cover;
 }
