@@ -52,7 +52,7 @@ yum.define([
             this.musica.tom = newTom;
             this.musica.save();
 
-            // app.omni.trigger('new:tom', app.omniGroupName, this.musica);
+            app.omni.trigger('new:tom', app.omniGroupName, this.musica);
         }
 
         updateTom(newTom) {
@@ -95,22 +95,9 @@ yum.define([
                 '(app) save:music'(musica) {
                     if (this.musica.id == musica.id) {
                         this.set(musica);
-                        // app.omni.trigger('update:musica', app.omniGroupName, musica);
+                        app.omni.trigger('update:musica', app.omniGroupName, musica);
                     }
                 },
-
-                // '(app.omni) new:tom'(musica) {
-                //     if (this.musica.id == musica.id) {
-                //         this.updateTom(musica.tom);
-                //     }
-                // },
-
-                // '(app.omni) update:musica'(musica) {
-                //     if (this.musica.id == musica.id) {
-                //         this.musica.inject(musica);
-                //         this.set(this.musica);
-                //     }
-                // },
 
                 '#youtube click'() {
                     var p = app.f7.popup.create({

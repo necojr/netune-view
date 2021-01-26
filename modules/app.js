@@ -172,6 +172,14 @@ yum.define([
                     }
                 },
 
+                '{omni} new:tom'(musica) {
+                    this.loadWorkspace();
+                },
+
+                '{omni} update:musica'(musica) {
+                    this.loadWorkspace();
+                },
+
                 '{this} save:music'() {
                     this.loadWorkspace();
                 },
