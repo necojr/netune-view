@@ -1,3 +1,4 @@
+const staticDiscontinued = ['netune-v1.0', 'netune-v2.0'];
 const staticNetune = 'netune-v3.0';
 const assets = [
     '/index.html',
@@ -22,7 +23,18 @@ caches.keys().then((keys) => {
     });
 });
 
-self.addEventListener('install', e => { 
+for (let i = 0; i < staticDiscontinued.length; i++) {
+    const name = staticDiscontinued[i];
+    caches.open(name).then((cache) => {
+        cache.keys().then((keys) => {
+            keys.forEach((key) => {
+                caches.delete(key);
+            });
+        });
+    });
+}
+
+self.addEventListener('install', e => {
     e.waitUntil(
         caches.open(staticNetune).then(cache => {
             cache.addAll(assets);
@@ -30,9 +42,9 @@ self.addEventListener('install', e => {
     );
 });
 
-self.addEventListener('fetch', e => { 
+self.addEventListener('fetch', e => {
     e.respondWith(
-        caches.match(e.request).then(res => { 
+        caches.match(e.request).then(res => {
             return res || fetch(e.request);
         })
     );

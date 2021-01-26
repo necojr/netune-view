@@ -36,9 +36,9 @@ yum.define([
                         <div class="item-inner">
                             <div class="item-title-row">
                                 <div class="item-title">@{nome}</div>
-                                <div class="item-after" data-name-op="delete" data-event-click="@{id}">
+                                <!--<div class="item-after" data-name-op="delete" data-event-click="@{id}">
                                     <i class="icon material-icons md-only">delete</i>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="item-subtitle">@{user.nome}</div>
                         </div>
@@ -74,6 +74,22 @@ yum.define([
             listen({
                 '#backPage click'() {
                     app.popPage();
+                },
+
+                '#create click'() {
+                    app.f7.dialog.prompt('Informe o nome da lista', 'Netune Cifras', (nome) => {
+                        this.model.nome = nome;
+                        this.model.userid = app.user.id;
+                        
+                        app.loading(true);
+                        this.model.insert().ok(() => {
+                            this.load();
+                        }).error(() => {
+                            app.notification('Atenção!', 'Sem conexão com a internet');
+                        }).done(() => {
+                            app.loading(false);
+                        });
+                    });
                 },
 
                 '{_list} click': function (_, workspace, el, event) {

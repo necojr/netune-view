@@ -92,6 +92,10 @@ yum.define([
             this.view.get('avatarUrl').src = user.avatar;
         }
 
+        setWorkspace(w){
+            this.view.get('workspaceNome').set(w.nome);
+        }
+
         loadWorkspace() {
             app.loading(true);
             this.user.loadWorkspace().ok((workspace) => {
@@ -99,6 +103,8 @@ yum.define([
 
                 this.musicList.clear();
                 this.musicList.load(workspace.musicas);
+
+                this.setWorkspace(workspace);
             });
         }
 

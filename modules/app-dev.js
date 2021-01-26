@@ -57,6 +57,8 @@ yum.define([
 
                 this.musicList.clear();
                 this.musicList.load(workspace.musicas);
+
+                this.setWorkspace(workspace);
             });
         }
 
@@ -73,6 +75,10 @@ yum.define([
         setUser(user){
             app.user = user;
             this.view.get('avatarUrl').src = user.avatar;
+        }
+
+        setWorkspace(w){
+            this.view.get('workspaceNome').set(w.nome);
         }
 
         openModal(modal) {
