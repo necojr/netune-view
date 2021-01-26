@@ -73,15 +73,22 @@ yum.define([
             super.events(listen);
         
             listen({
+                '#backPage click'() {
+                    app.popPage();
+                },
+
                 '#save click'() {
-                    app.user.avatar = this.avatarUrl || 'images/avatar/unknown.png';
+                    app.user.avatar = this.avatarUrl || app.user.avatar;
                     app.user.nome = this.view.get('nome').get();
 
+                    app.loading(true);
                     app.user.save().ok(() => {
                         this.event.trigger('update');
                         app.popPage();
                     }).error(() => {
                         app.notification('Atenção!', 'Sem conexão com a internet');
+                    }).done(() => {
+                        app.loading(false);
                     });
                 },
 
