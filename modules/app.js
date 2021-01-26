@@ -31,6 +31,7 @@ yum.define([
                 Pi.Url.create('Music', '/model.js'),
                 Pi.Url.create('Omni', '/client.js'),
                 Pi.Url.create('User', '/model.js'),
+                Pi.Url.create('User', '/page.js'),
                 Pi.Url.create('Workspace', '/page.js')
             ], () => {
                 app.loading(false);
@@ -89,10 +90,11 @@ yum.define([
 
         setUser(user) {
             app.user = user;
+            this.view.get('changeUser').show();
             this.view.get('avatarUrl').src = user.avatar;
         }
 
-        setWorkspace(w){
+        setWorkspace(w) {
             this.view.get('workspaceNome').set(w.nome);
         }
 
@@ -169,6 +171,12 @@ yum.define([
             super.events(listen);
 
             listen({
+                '#changeUser click'() {
+                    this.addPage(new User.Page()).event.listen('update', () => {
+                        this.setUser(app.user);
+                    });
+                },
+
                 '#changeWorkspace click'() {
                     this.addPage(new Workspace.Page()).event.listen('select', () => {
                         this.loadWorkspace()

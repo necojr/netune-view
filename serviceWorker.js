@@ -1,11 +1,12 @@
-const staticDiscontinued = ['netune-v1.0', 'netune-v2.0'];
-const staticNetune = 'netune-v3.0';
-const assets = [
+const staticDiscontinued = ['netune-v1.0', 'netune-v2.0', 'netune-v3.0'];
+const staticNetune = 'netune-v4.0';
+var assets = [
     '/index.html',
     '/css/app.css',
     '/css/fa-all.min.css',
     '/js/app.js',
     '/images/wallpaper-02.jpg',
+    '/images/wallpaper-05.jpg',
     '/vendor/pillar/pillar.js',
     '/vendor/pillar/jquery.js',
     '/vendor/pillar/app.css',
@@ -16,6 +17,10 @@ const assets = [
     '/modules/app.js',
     '/modules/config.js',
 ];
+
+for (let i = 0; i < 50; i++) {
+    assets.push(`/images/avatar/0${i + 1}.png`);
+}
 
 caches.keys().then((keys) => {
     keys.forEach((key) => {

@@ -7,6 +7,7 @@ yum.define([
     Pi.Url.create('Music', '/model.js'),
     Pi.Url.create('Omni', '/client.js'),
     Pi.Url.create('User', '/model.js'),
+    Pi.Url.create('User', '/page.js'),
     Pi.Url.create('Workspace', '/page.js')
 ], function () {
 
@@ -141,6 +142,12 @@ yum.define([
             super.events(listen);
 
             listen({
+                '#changeUser click'() {
+                    this.addPage(new User.Page()).event.listen('update', () => {
+                        this.setUser(app.user);
+                    });
+                },
+
                 '#changeWorkspace click'() {
                     this.addPage(new Workspace.Page()).event.listen('select', () => {
                         this.loadWorkspace()
