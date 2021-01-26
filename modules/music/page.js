@@ -22,7 +22,8 @@ yum.define([
                                 <i class="ffab fa-youtube" style="font-size: 32px; color: #ff3300;"></i>
                             </a>
                             <a href="javascript:void(0)" id="trocaTom" class="link back">
-                                <i class="fas fa-wrench" style="font-size: 26px; color: #333;"></i>
+                                <i class="icon material-icons md-only">audiotrack</i>
+                                <span id="tom"></span>
                             </a>
                         </div>
                     </div>
@@ -54,7 +55,8 @@ yum.define([
             app.omni.trigger('new:tom', app.omniGroupName, this.musica);
         }
 
-        updateTom(newTom){
+        updateTom(newTom) {
+            this.view.get('tom').set(newTom);
             this.lyrics.trocarTom(newTom);
             this.slider.load(this.lyrics);
             this.musica.lyrics = this.lyrics.text;
@@ -71,6 +73,8 @@ yum.define([
             }
             
             this.view.get('title').set(this.musica.nome);
+            this.view.get('tom').set(this.musica.tom);
+
             this.slider.load(this.lyrics);
         }
 
