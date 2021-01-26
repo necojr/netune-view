@@ -25,9 +25,14 @@ Pi.App.config({
         /**
           App Configuration
          */
-        'Music': {base: 'Modules', url: '/music'},
+        'Music': { base: 'Modules', url: '/music' },
         'Lexicon': { base: 'Modules', url: '/lexicon' },
         'Workspace': { base: 'Modules', url: '/workspace' },
+        'User': { base: 'Modules', url: '/user' },
+
+        /**
+         *  Vendor Configuration 
+         * */
         'Omni': { base: 'Vendor', url: '/omni' },
     },
 

@@ -6,7 +6,8 @@ yum.define([
     Pi.Url.create('Workspace', '/model.js'),
     Pi.Url.create('Music', '/editor.js'),
     Pi.Url.create('Music', '/model.js'),
-    Pi.Url.create('Omni', '/client.js')
+    Pi.Url.create('Omni', '/client.js'),
+    Pi.Url.create('User', '/model.js')
 ], function () {
 
     class App extends Pi.App {
@@ -24,8 +25,8 @@ yum.define([
             this.initFramework7();
             this.initComponents();
 
-            this.loadWorkspace();
-
+            this.loadUser();
+            
             super.viewDidLoad();
         }
 
@@ -53,12 +54,22 @@ yum.define([
 
         loadWorkspace() {
             app.loading(true);
-            this.workspace.current().ok((workspace) => {
+            this.workspace.get(app.user.workspaceId).ok((workspace) => {
                 app.loading(false);
 
                 this.workspace = workspace;
                 this.musicList.clear();
                 this.musicList.load(workspace.musicas);
+            });
+        }
+
+        loadUser(){
+            app.loading(true);
+            User.Model.current().ok((user) => {
+                app.loading(false);
+                
+                app.user = user;
+                this.loadWorkspace();
             });
         }
 

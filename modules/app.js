@@ -58,7 +58,7 @@ yum.define([
         removeSplash(){
             this.view.get('pages').show();
             this.view.get('initialize').hide();
-            document.body.classList.add('wallpaper-01');
+            document.body.classList.add('wallpaper-02');
         }
 
         initComponents() {
