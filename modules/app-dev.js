@@ -16,6 +16,8 @@ yum.define([
         instances() {
             this.pages = [];
 
+            this.omniGroupName = 'netune:cifras';
+
             this.omni = new Omni.Client();
             this.omni.connect();
         }
