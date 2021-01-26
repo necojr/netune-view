@@ -39,7 +39,7 @@ yum.define([
                 this.initComponents();
                 this.initEvents();
                 
-                this.loadWorkspace();
+                this.loadUser();
             });
         }
 
@@ -78,6 +78,16 @@ yum.define([
         initEvents(){
             document.addEventListener('backbutton', () => {
                 this.popPage();
+            });
+        }
+
+        loadUser(){
+            app.loading(true);
+            User.Model.current().ok((user) => {
+                app.loading(false);
+                
+                app.user = user;
+                this.loadWorkspace();
             });
         }
 
