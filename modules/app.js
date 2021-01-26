@@ -155,13 +155,13 @@ yum.define([
         }
 
         saveWorkspace() {
-            this.workspace.musicas = this.musicList.get();
+            this.user.workspace.musicas = this.musicList.get();
 
             this.loading(true);
-            this.workspace.save().done(() => {
+            this.user.workspace.save().done(() => {
                 this.loading(false);
 
-                this.omni.trigger('reload:workspace', this.omniGroupName, this.workspace);
+                this.omni.trigger('reload:workspace', this.omniGroupName, this.user.workspace);
             }).error(() => {
                 app.notification('Atenção!', 'Sem conexão com a internet');
             });
@@ -198,14 +198,14 @@ yum.define([
                 },
 
                 '{omni} reload:workspace'(workspace) {
-                    if (this.workspace.id == workspace.id) {
+                    if (this.user.workspace.id == workspace.id) {
                         this.loadWorkspace();
                     }
                 },
 
                 '{omni} new:tom'(musica) {
-                    for (let i = 0; i < app.workspace.musicas.length; i++) {
-                        const m = app.workspace.musicas[i];
+                    for (let i = 0; i < this.user.workspace.musicas.length; i++) {
+                        const m = this.user.workspace.musicas[i];
                         if (m.id == musica.id) {
                             this.loadWorkspace();
                             break;
@@ -214,8 +214,8 @@ yum.define([
                 },
 
                 '{omni} update:musica'(musica) {
-                    for (let i = 0; i < app.workspace.musicas.length; i++) {
-                        const m = app.workspace.musicas[i];
+                    for (let i = 0; i < this.user.workspace.musicas.length; i++) {
+                        const m = this.user.workspace.musicas[i];
                         if (m.id == musica.id) {
                             this.loadWorkspace();
                             break;
@@ -224,8 +224,8 @@ yum.define([
                 },
 
                 '{this} save:music'(musica) {
-                    for (let i = 0; i < app.workspace.musicas.length; i++) {
-                        const m = app.workspace.musicas[i];
+                    for (let i = 0; i < this.user.workspace.musicas.length; i++) {
+                        const m = this.user.workspace.musicas[i];
                         if (m.id == musica.id) {
                             this.loadWorkspace();
                             break;
