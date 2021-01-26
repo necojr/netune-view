@@ -1,4 +1,4 @@
-const staticNetune = 'netune-v2.0';
+const staticNetune = 'netune-v3.0';
 const assets = [
     '/index.html',
     '/css/app.css',
@@ -15,6 +15,12 @@ const assets = [
     '/modules/app.js',
     '/modules/config.js',
 ];
+
+caches.keys().then((keys) => {
+    keys.forEach((key) => {
+        caches.delete(key);
+    });
+});
 
 self.addEventListener('install', e => { 
     e.waitUntil(
