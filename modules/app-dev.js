@@ -3,19 +3,17 @@ yum.define([
     Pi.Url.create('Music', '/choose.js'),
     Pi.Url.create('Music', '/popup.js'),
     Pi.Url.create('Music', '/page.js'),
-    Pi.Url.create('Workspace', '/model.js'),
     Pi.Url.create('Music', '/editor.js'),
     Pi.Url.create('Music', '/model.js'),
     Pi.Url.create('Omni', '/client.js'),
-    Pi.Url.create('User', '/model.js')
+    Pi.Url.create('User', '/model.js'),
+    Pi.Url.create('Workspace', '/page.js')
 ], function () {
 
     class App extends Pi.App {
 
         instances() {
             this.pages = [];
-
-            this.workspace = new Workspace.Model();
 
             this.omni = new Omni.Client();
             this.omni.connect();
@@ -54,10 +52,9 @@ yum.define([
 
         loadWorkspace() {
             app.loading(true);
-            this.workspace.get(app.user.workspaceId).ok((workspace) => {
+            this.user.loadWorkspace().ok((workspace) => {
                 app.loading(false);
 
-                this.workspace = workspace;
                 this.musicList.clear();
                 this.musicList.load(workspace.musicas);
             });
@@ -67,10 +64,15 @@ yum.define([
             app.loading(true);
             User.Model.current().ok((user) => {
                 app.loading(false);
-                
-                app.user = user;
+
+                this.setUser(user);
                 this.loadWorkspace();
             });
+        }
+        
+        setUser(user){
+            app.user = user;
+            this.view.get('avatarUrl').src = user.avatar;
         }
 
         openModal(modal) {
@@ -82,8 +84,9 @@ yum.define([
 
         addPage(page) {
             this.pages.push(page);
-
             page.render(this.view.get('pages'));
+
+            return page;
         }
 
         get currentPage() {
@@ -132,6 +135,12 @@ yum.define([
             super.events(listen);
 
             listen({
+                '#changeWorkspace click'() {
+                    this.addPage(new Workspace.Page()).event.listen('select', () => {
+                        this.loadWorkspace()
+                    });
+                },
+
                 '#addMusic click'() {
                     this.musicPopup.open();
                 },
@@ -148,20 +157,38 @@ yum.define([
 
                 '{omni} reload:workspace'(workspace) {
                     if (this.workspace.id == workspace.id) {
-                        this.loadWorkspace();
+                        this.loadWorkspace(workspace.id);
                     }
                 },
 
                 '{omni} new:tom'(musica) {
-                    this.loadWorkspace();
+                    for (let i = 0; i < app.workspace.musicas.length; i++) {
+                        const m = app.workspace.musicas[i];
+                        if (m.id == musica.id) {
+                            this.loadWorkspace(app.workspace.id);
+                            break;
+                        }
+                    }
                 },
 
                 '{omni} update:musica'(musica) {
-                    this.loadWorkspace();
+                    for (let i = 0; i < app.workspace.musicas.length; i++) {
+                        const m = app.workspace.musicas[i];
+                        if (m.id == musica.id) {
+                            this.loadWorkspace(app.workspace.id);
+                            break;
+                        }
+                    }
                 },
 
-                '{this} save:music'() {
-                    this.loadWorkspace();
+                '{this} save:music'(musica) {
+                    for (let i = 0; i < app.workspace.musicas.length; i++) {
+                        const m = app.workspace.musicas[i];
+                        if (m.id == musica.id) {
+                            this.loadWorkspace(app.workspace.id);
+                            break;
+                        }
+                    }
                 },
 
                 '{musicPopup} choose'(musicas) {
@@ -177,7 +204,7 @@ yum.define([
                 '{musicList} select'(musica) {
                     this.addPage(new Music.Page({
                         musica: musica
-                    }))
+                    }));
                 }
             });
         }

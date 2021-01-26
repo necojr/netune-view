@@ -21,8 +21,13 @@ yum.define([
         initWithJson(json) {
             super.initWithJson(json);
 
+            this.musicas = json.musicas || [];
             for (let i = 0; i < this.musicas.length; i++) {
                 this.musicas[i] = Music.Model.create().initWithJson(this.musicas[i]);
+            }
+
+            if (this.user) {
+                this.user = User.Model.create().initWithJson(this.user);
             }
 
             return this;
@@ -34,6 +39,7 @@ yum.define([
             add({
                 'current': 'GET:/current',
                 'save': 'POST:/save',
+                'select': 'POST:/select?id=:id',
             });
         }
 

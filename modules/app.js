@@ -4,7 +4,7 @@ yum.define([
 
     class App extends Pi.App {
 
-        instances(){
+        instances() {
             this.pages = [];
 
             this.omniGroupName = 'netune:cifras';
@@ -27,24 +27,26 @@ yum.define([
                 Pi.Url.create('Music', '/choose.js'),
                 Pi.Url.create('Music', '/popup.js'),
                 Pi.Url.create('Music', '/page.js'),
-                Pi.Url.create('Workspace', '/model.js'),
                 Pi.Url.create('Music', '/editor.js'),
                 Pi.Url.create('Music', '/model.js'),
-                Pi.Url.create('Omni', '/client.js')
+                Pi.Url.create('Omni', '/client.js'),
+                Pi.Url.create('User', '/model.js'),
+                Pi.Url.create('Workspace', '/page.js')
             ], () => {
                 app.loading(false);
 
                 this.removeSplash();
-                this.initInstances();
                 this.initComponents();
                 this.initEvents();
-                
+
                 this.loadUser();
             });
         }
 
-        initInstances() {
-            this.workspace = new Workspace.Model();
+        removeSplash() {
+            this.view.get('pages').show();
+            this.view.get('initialize').hide();
+            document.body.classList.add('wallpaper-02');
         }
 
         initFramework7() {
@@ -53,12 +55,6 @@ yum.define([
                 name: 'Netune',
                 id: 'br.com.atos239.netune',
             });
-        }
-
-        removeSplash(){
-            this.view.get('pages').show();
-            this.view.get('initialize').hide();
-            document.body.classList.add('wallpaper-02');
         }
 
         initComponents() {
@@ -75,28 +71,32 @@ yum.define([
             this.musicList.render(this.view.get('musicList'));
         }
 
-        initEvents(){
+        initEvents() {
             document.addEventListener('backbutton', () => {
                 this.popPage();
             });
         }
 
-        loadUser(){
+        loadUser() {
             app.loading(true);
             User.Model.current().ok((user) => {
                 app.loading(false);
-                
-                app.user = user;
+
+                this.setUser(user);
                 this.loadWorkspace();
             });
         }
 
+        setUser(user) {
+            app.user = user;
+            this.view.get('avatarUrl').src = user.avatar;
+        }
+
         loadWorkspace() {
             app.loading(true);
-            this.workspace.current().ok((workspace) => {
+            this.user.loadWorkspace().ok((workspace) => {
                 app.loading(false);
 
-                this.workspace = workspace;
                 this.musicList.clear();
                 this.musicList.load(workspace.musicas);
             });
@@ -111,8 +111,9 @@ yum.define([
 
         addPage(page) {
             this.pages.push(page);
-
             page.render(this.view.get('pages'));
+
+            return page;
         }
 
         get currentPage() {
@@ -147,7 +148,7 @@ yum.define([
 
         saveWorkspace() {
             this.workspace.musicas = this.musicList.get();
-            
+
             this.loading(true);
             this.workspace.save().done(() => {
                 this.loading(false);
@@ -162,6 +163,12 @@ yum.define([
             super.events(listen);
 
             listen({
+                '#changeWorkspace click'() {
+                    this.addPage(new Workspace.Page()).event.listen('select', () => {
+                        this.loadWorkspace()
+                    });
+                },
+
                 '#addMusic click'() {
                     this.musicPopup.open();
                 },
@@ -183,15 +190,33 @@ yum.define([
                 },
 
                 '{omni} new:tom'(musica) {
-                    this.loadWorkspace();
+                    for (let i = 0; i < app.workspace.musicas.length; i++) {
+                        const m = app.workspace.musicas[i];
+                        if (m.id == musica.id) {
+                            this.loadWorkspace();
+                            break;
+                        }
+                    }
                 },
 
                 '{omni} update:musica'(musica) {
-                    this.loadWorkspace();
+                    for (let i = 0; i < app.workspace.musicas.length; i++) {
+                        const m = app.workspace.musicas[i];
+                        if (m.id == musica.id) {
+                            this.loadWorkspace();
+                            break;
+                        }
+                    }
                 },
 
-                '{this} save:music'() {
-                    this.loadWorkspace();
+                '{this} save:music'(musica) {
+                    for (let i = 0; i < app.workspace.musicas.length; i++) {
+                        const m = app.workspace.musicas[i];
+                        if (m.id == musica.id) {
+                            this.loadWorkspace();
+                            break;
+                        }
+                    }
                 },
 
                 '{musicPopup} choose'(musicas) {

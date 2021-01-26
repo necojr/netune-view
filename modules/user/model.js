@@ -1,5 +1,5 @@
 yum.define([
-    
+    Pi.Url.create('Workspace', '/model.js')
 ], function () {
 
     class Model extends Pi.Model.Abstract{
@@ -20,6 +20,10 @@ yum.define([
 
         initWithJson(json) {
             super.initWithJson(json);
+
+            this.workspace = new Workspace.Model({
+                id: this.workspaceId
+            });
 
             return this;
         }
@@ -43,11 +47,27 @@ yum.define([
             return promise;
         }
 
+        loadWorkspace() {
+            return this.workspace.get(this.workspaceId).ok((w) => {
+                this.workspace = w;
+            })
+        }
+
+        changeWorkspace(wid){
+            this.workspaceId = wid;
+
+            this.workspace = new Workspace.Model({
+                id: wid
+            });
+
+            return this._changeWorkspace(wid);
+        }
+
         actions(add) {
             super.actions(add)
             
             add({
-                
+                _changeWorkspace: 'POST:/changeWorkspace'
             });
         }
 
