@@ -1,6 +1,5 @@
 yum.define([
     Pi.Url.create('Music', '/list.js'),
-    Pi.Url.create('Music', '/choose.js'),
     Pi.Url.create('Music', '/popup.js'),
     Pi.Url.create('Music', '/page.js'),
     Pi.Url.create('Music', '/editor.js'),
