@@ -1,6 +1,5 @@
 yum.define([
-    Pi.Url.create('Vendor', '/codemirror/codemirror.css'),
-    Pi.Url.create('Vendor', '/codemirror/codemirror.js'),
+    
 ], function (html) {
 
     class Control extends Pi.Component {
