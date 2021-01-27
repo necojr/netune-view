@@ -89,6 +89,10 @@ yum.define([
             return Pi.Url.create(link).getQuery('v');
         }
 
+        convertToYoutubeEmbedLink(link){
+            return ['h', 't', 't', 'p', 's', ':', '/', '/'].join('') + 'www.youtube.com/embed/' + this.getYoutubeId(link);
+        }
+
         events(listen) {
             super.events(listen);
 
@@ -127,7 +131,7 @@ yum.define([
                                 </div>
                                 <div class="block">
                                     <div class="yt-container">
-                                        <iframe width="320" src="https://www.youtube.com/embed/${this.getYoutubeId(this.lyrics.youtube)}" frameborder="0" allowfullscreen class="video"></iframe>
+                                        <iframe width="320" src="${this.convertToYoutubeEmbedLink(this.lyrics.youtube)}" frameborder="0" allowfullscreen class="video"></iframe>
                                     </div>
                                 </div>
                             </div>`,
