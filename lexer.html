@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- pillar framework -->
+    <script src="vendor/pillar/jquery.js"></script>
+    <script src="vendor/pillar/pillar.js?v1.0.14"></script>
+
+    <script>
+        Pi.ready(() => {
+            Pi.App.config({
+                modules: {
+                    'Lexicon': { url: 'modules/lexicon' },
+                    'Music': { url: 'modules/music' }
+                }
+            });
+
+            yum.download([
+                Pi.Url.create('Music', '/parser.js')
+            ], () => {
+                document.getElementById('analise').addEventListener('click', () => {
+                    var parser = new Music.Parser();
+                    var lyrics = parser.parse(document.getElementById('musica').value);
+                    document.getElementById('musica').value = lyrics.text;
+                });
+            })
+        })
+    </script>
+</head>
+
+<body>
+
+    <button id="analise">Analise</button>
+
+    <textarea id="musica" style="width: 100%; height: 1000px;">
+Musica
+Quão formoso És
+
+
+
+Tom
+D
+    </textarea>
+
+</body>
+
+</html>

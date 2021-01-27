@@ -13,13 +13,17 @@ yum.define([
             this._numCoro = 0;
             this._numEstrofe = 0;
             this._numPonte = 0;
+            this._numParte = 0;
         }
 
         get text() {
             var text = [];
 
-            text.push(`nome\n${this.titulo}`);
-            text.push(`\n\nversao\n${this.versao}`);
+            text.push(`MUSICA\n${this.titulo}`);
+            text.push(`\n\nVERSAO\n${this.versao}`);
+            if (this.youtube.length > 0) {
+                text.push(`\n\nYOUTUBE\n${this.youtube}`)
+            }
 
             for (let i = 0; i < this._tokens.length; i++) {
                 const token = this._tokens[i];
@@ -27,13 +31,13 @@ yum.define([
                 const value = token.value;
 
                 if (token.isTitle) {
-                    text.push(`\n\n${key}`);
+                    text.push(`\n\n${key.toUpperCase()}`);
 
                     if (value.length > 0) {
-                        text.push(`\n${value}`);
+                        text.push(`\n${this.convertNoteToUpper(value)}`);
                     }
                 } else {
-                    text.push(`\n${key}\n${value}`);
+                    text.push(`\n${this.convertNoteToUpper(key)}\n${value}`);
                 }
             }
 
@@ -61,7 +65,7 @@ yum.define([
 
             var oldNotes = escalaMaiorNatural[this._tom.toUpperCase()];
             if (oldNotes == null) return;
-            
+
             var newNotes = escalaMaiorNatural[newTom.toUpperCase()];
             if (newNotes == null) return;
 
@@ -69,12 +73,12 @@ yum.define([
                 const token = this._tokens[i];
 
                 if (token.isTitle) {
-                    token.value = token.value.replace(/[A-G]#?b?/g, (note) => {
+                    token.value = token.value.replace(/([a-g]|[A-G])#?b?/g, (note) => {
                         var index = oldNotes.indexOf(note);
                         return newNotes[index];
                     });
                 } else {
-                    token.key = token.key.replace(/[A-G]#?b?/g, (note) => {
+                    token.key = token.key.replace(/([a-g]|[A-G])#?b?/g, (note) => {
                         var index = oldNotes.indexOf(note);
                         return newNotes[index];
                     });
@@ -157,6 +161,8 @@ yum.define([
             });
 
             for (let i = 0; i < arr.length; i += 2) {
+                if (arr[i] == undefined || arr[i + 1] == undefined) throw nome + ' esta incompleta';
+
                 this._tokens.push({
                     key: arr[i],
                     value: arr[i + 1],
@@ -170,6 +176,11 @@ yum.define([
         set estrofe(estrofe) {
             this._numEstrofe++;
             this.addEstrofe(`ESTROFE ${this._numEstrofe}`, this.clear(estrofe), 'ESTROFE');
+        }
+
+        set parte(parte) {
+            this._numParte++;
+            this.addEstrofe(`PARTE ${this._numEstrofe}`, this.clear(parte), 'PARTE');
         }
 
         set ponte(ponte) {
@@ -199,6 +210,12 @@ yum.define([
             linha = linha.replace(/\t/gi, '');
 
             return linha.length == 0;
+        }
+
+        convertNoteToUpper(note){
+            return note.replace(/([a-g]|[A-G])#?b?/g, (note) => {
+                return note.toUpperCase();
+            });
         }
     };
 

@@ -1,73 +1,91 @@
 yum.define([
     Pi.Url.create('Music', '/lyrics.js'),
     Pi.Url.create('Lexicon', '/automate.js')
-], function(){
+], function () {
 
     class Parser extends Pi.Class {
 
         instances() {
-            this.automate = new Lexicon.Automate();
-            this.tags = ['youtube', 'nome', 'musica', 'titulo', 'intro', 'tom', 'versao', 'estrofe', 'ponte', 'coro'];
+            this.automates = [];
 
-            this.automate.add(0, 0, ['[empty]']);
-            this.automate.add(0, 1, ['estrofe', 'ponte', 'coro']);
-            this.automate.add(1, 2, ['[text]']);
-            this.automate.add(1, 4, ['[empty]']);
-            this.automate.add(4, 4, ['[empty]']);
-            this.automate.add(4, 2, ['[text]']);
-            this.automate.add(2, 2, ['[text]', '[empty]']);
-            this.automate.add(2, 3, ['[empty]']);
-            this.automate.add(2, 3, ['[done]']);
-            this.automate.add(2, 3, this.tags);
-            this.automate.add(0, 4, ['youtube', 'nome', 'musica', 'titulo', 'intro', 'tom', 'versao']);
-            this.automate.add(4, 5, ['[text]']);
-            this.automate.add(4, 6, ['[empty]']);
-            this.automate.add(6, 6, ['[empty]']);
-            this.automate.add(6, 5, ['[text]']);
-            this.automate.add(5, 3, ['[empty]']);
-            this.automate.add(5, 3, ['[done]']);
-            this.automate.add(5, 3, this.tags);
-            this.automate.doneOn(3);
+            this.keywordsInfo = ['youtube', 'nome', 'musica', 'titulo', 'intro', 'tom', 'versao'];
+            this.keywordsMusic = ['parte', 'estrofe', 'ponte', 'coro'];
+
+            this.automates.push(new Lexicon.Automate());
+            this.automates[0].add(0, 0, ['[empty]']);
+            this.automates[0].add(0, 1, this.keywordsMusic);
+            this.automates[0].add(1, 2, ['[text]']);
+            this.automates[0].add(2, 2, ['[text]']);
+            this.automates[0].add(2, 3, this.keywordsInfo);
+            this.automates[0].add(2, 3, this.keywordsMusic);
+            this.automates[0].add(2, 3, ['[empty]']);
+            this.automates[0].add(2, 3, ['[done]']);
+            this.automates[0].doneOn(3);
+
+            this.automates.push(new Lexicon.Automate());
+            this.automates[1].add(0, 0, ['[empty]']);
+            this.automates[1].add(0, 1, this.keywordsInfo);
+            this.automates[1].add(1, 2, ['[text]']);
+            this.automates[1].add(2, 3, ['[empty]']);
+            this.automates[1].add(2, 3, ['[text]']);
+            this.automates[1].add(2, 3, ['[done]']);
+            this.automates[1].doneOn(3);
         }
 
         parse(text) {
             var lyrics = new Music.Lyrics();
             var linhas = text.replace(/\r/gi, '').split('\n');
             var values = [];
+            var automates = this.automates;
 
-            this.automate.onStart(() => {
-                values = [];
-            });
+            for (let i = 0; i < automates.length; i++) {
+                automates[i].onStart(() => {
+                    values = [];
+                });
 
-            this.automate.onDone(() => {
-                const events = this.automate.events;
-                lyrics.add(events[0], values);
-            });
+                automates[i].onDone(function () {
+                    const events = this.events;
+                    lyrics.add(events[0], values);
+
+                    for (let j = 0; j < automates.length; j++) {
+                        automates[j].reset().enable(true);
+                    }
+                });
+            }
 
             for (let i = 0; i < linhas.length; i++) {
                 const linhaRaw = linhas[i];
                 const linha = this.clear(linhaRaw);
                 const event = this.convertToEvent(linha);
 
-                this.automate.onStep(() => {
-                    values.push(linhaRaw);
-                });
+                for (let j = 0; j < automates.length; j++) {
+                    const automate = automates[j];
 
-                this.automate.onInvalid(() => {
-                    throw 'Erro na linha ' + (i + 1);
-                });
+                    automate.onStep(function () {
+                        values.push(linhaRaw);
+                    });
 
-                this.automate.trigger(event);
+                    automate.onInvalid(function (step) {
+                        if (step == 0) this.reset().enable(false);
+                        else throw 'Erro na linha ' + (i + 1);
+                    });
+
+                    automate.trigger(event);
+                }
             }
 
-            this.automate.onStep(null);
-            this.automate.trigger('[done]');
+            for (let i = 0; i < automates.length; i++) {
+                const automate = automates[i];
+                automate.onStep(null);
+                automate.trigger('[done]');
+            }
 
             return lyrics;
         }
 
         convertToEvent(linha) {
-            if (this.tags.indexOf(linha) > -1) return linha;
+            if (this.keywordsInfo.indexOf(linha) > -1) return linha;
+            if (this.keywordsMusic.indexOf(linha) > -1) return linha;
             if (linha.length == 0) return '[empty]';
 
             return '[text]';

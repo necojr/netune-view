@@ -6,6 +6,7 @@ yum.define([
         instances() {
             this.nodes = [];
             this.done = -1;
+            this.enabled = true;
 
             this.reset();
         }
@@ -15,6 +16,12 @@ yum.define([
                 const event = events[i];
                 this.nodes[`${from}:${event}`] = to;
             }
+
+            return this;
+        }
+
+        enable(b){
+            this.enabled = b;
 
             return this;
         }
@@ -42,17 +49,20 @@ yum.define([
         }
 
         trigger(event) {
+            if (!this.enabled) return this;
+
             if (!this.exist(this.current, event)) {
+                if (this._cbInvalid) this._cbInvalid(this.current);
+
                 this.current = -1;
-                if (this._cbInvalid) this._cbInvalid();
-                return;
+                return this;
             }
 
             const from = this.current;
             const to = this.get(from, event);
 
             if (from == 0 && to > 0) {
-                this.reset();
+                this.events = [];
                 if (this._cbStart) this._cbStart(event);
             } else if (from > 0 && to > 0) {
                 if(this._cbStep) this._cbStep(event);
@@ -65,6 +75,8 @@ yum.define([
                 if (this._cbDone) this._cbDone();
                 this.reset();
             }
+
+            return this;
         }
 
         reset() {
