@@ -15,17 +15,20 @@ yum.define([
             this.automates[0].add(0, 0, ['[empty]']);
             this.automates[0].add(0, 1, this.keywordsMusic);
             this.automates[0].add(1, 2, ['[text]']);
-            this.automates[0].add(2, 2, ['[text]']);
-            this.automates[0].add(2, 3, this.keywordsInfo);
-            this.automates[0].add(2, 3, this.keywordsMusic);
-            this.automates[0].add(2, 3, ['[empty]']);
-            this.automates[0].add(2, 3, ['[done]']);
+            this.automates[0].add(2, 4, ['[text]']);
+            this.automates[0].add(4, 2, ['[text]']);
+            this.automates[0].add(4, 3, this.keywordsInfo);
+            this.automates[0].add(4, 3, this.keywordsMusic);
+            this.automates[0].add(4, 3, ['[empty]']);
+            this.automates[0].add(4, 3, ['[done]']);
             this.automates[0].doneOn(3);
 
             this.automates.push(new Lexicon.Automate());
             this.automates[1].add(0, 0, ['[empty]']);
             this.automates[1].add(0, 1, this.keywordsInfo);
             this.automates[1].add(1, 2, ['[text]']);
+            this.automates[0].add(2, 3, this.keywordsInfo);
+            this.automates[0].add(2, 3, this.keywordsMusic);
             this.automates[1].add(2, 3, ['[empty]']);
             this.automates[1].add(2, 3, ['[text]']);
             this.automates[1].add(2, 3, ['[done]']);
@@ -37,6 +40,10 @@ yum.define([
             var linhas = text.replace(/\r/gi, '').split('\n');
             var values = [];
             var automates = this.automates;
+            
+            for (let j = 0; j < automates.length; j++) {
+                automates[j].reset().enable(true);
+            }
 
             for (let i = 0; i < automates.length; i++) {
                 automates[i].onStart(() => {
@@ -67,7 +74,10 @@ yum.define([
 
                     automate.onInvalid(function (step) {
                         if (step == 0) this.reset().enable(false);
-                        else throw 'Erro na linha ' + (i + 1);
+                        else throw {
+                            message: 'Linha ' + (i + 1) + ' está errada',
+                            line: i + 1
+                        };
                     });
 
                     automate.trigger(event);

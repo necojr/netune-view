@@ -1,0 +1,17 @@
+.cm-title {
+    background-color: #ffff00;
+    color: #333;
+    padding: 0px 20px;
+    font-weight: bold;
+}
+
+.cm-note {
+    color: red;
+    font-weight: bold;
+}
+
+.cm-error {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAYAAACddGYaAAAAGUlEQVQI12M4Kyb2/6yY2H8GBgYGJgYkAABURgPz6Ks7wQAAAABJRU5ErkJggg==);
+    background-position: bottom left;
+    background-repeat: repeat-x;
+}

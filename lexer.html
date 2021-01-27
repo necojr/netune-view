@@ -15,18 +15,59 @@
             Pi.App.config({
                 modules: {
                     'Lexicon': { url: 'modules/lexicon' },
-                    'Music': { url: 'modules/music' }
+                    'Music': { url: 'modules/music' },
+                    'Vendor': { url: 'vendor' }
                 }
             });
 
             yum.download([
-                Pi.Url.create('Music', '/parser.js')
+                Pi.Url.create('Music', '/parser.js'),
+                Pi.Url.create('vendor/codemirror/editor.js'),
+                Pi.Url.create('vendor/codemirror/music.js'),
             ], () => {
-                document.getElementById('analise').addEventListener('click', () => {
-                    var parser = new Music.Parser();
-                    var lyrics = parser.parse(document.getElementById('musica').value);
-                    document.getElementById('musica').value = lyrics.text;
+                var parser = new Music.Parser();
+                var music = new CodeMirrorModeMusic();
+
+                music.addLookup('musica', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('versao', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('tom', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('youtube', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('titulo', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('nome', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('estrofe', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('coro', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('parte', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('intro', CodeMirrorModeMusicType.TITLE);
+                music.addLookup('ponte', CodeMirrorModeMusicType.TITLE);
+
+                window.editor = new CodeMirrorEditor({
+                    mode: 'music'
                 });
+
+                var lyrics = `
+Musica
+Quão formoso És
+
+
+
+Tom
+D
+
+estrofe
+Quao formoso és`;
+
+                window.editor.render(document.getElementById('editor'));
+                window.editor.set(lyrics);
+
+                document.getElementById('analise').addEventListener('click', () => {
+                    try {
+                        text = parser.parse(window.editor.get()).text
+                        window.editor.set(text);
+                    } catch (error) {
+                        window.editor.markLineError(error.line)
+                    }
+                })
+
             })
         })
     </script>
@@ -36,7 +77,9 @@
 
     <button id="analise">Analise</button>
 
-    <textarea id="musica" style="width: 100%; height: 1000px;">
+    <div id="editor"></div>
+
+    <!-- <textarea id="musica" style="width: 100%; height: 1000px;">
 Musica
 Quão formoso És
 
@@ -44,7 +87,7 @@ Quão formoso És
 
 Tom
 D
-    </textarea>
+    </textarea> -->
 
 </body>
 

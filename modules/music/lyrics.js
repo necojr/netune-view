@@ -27,7 +27,7 @@ yum.define([
 
             for (let i = 0; i < this._tokens.length; i++) {
                 const token = this._tokens[i];
-                const key = token.key.replace(/\d+/gi, '');
+                const key = token.key.replace(/\s\d+/gi, '');
                 const value = token.value;
 
                 if (token.isTitle) {
