@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="vendor/codemirror/codemirror.css">
+    <script src="vendor/codemirror/codemirror.js"></script>
+
+    <style>
+        .cm-title{
+            background-color: #ffff00;
+            color: #333;
+            padding: 0px 20px;
+            font-weight: bold;
+        }
+        
+        .cm-cifra{
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+
+        function words(str) {
+            var obj = {}, words = str.split(" ");
+            for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
+            return obj;
+        }
+
+        function cTypes(identifier) {
+            return contains(basicCTypes, identifier) || /.+_t$/.test(identifier);
+        }
+
+        function contains(words, word) {
+            if (typeof words === "function") {
+                return words(word);
+            } else {
+                return words.propertyIsEnumerable(word);
+            }
+        }
+
+        var cKeywords = "Musica Tom Versao";
+        var basicCTypes = words("Estrofe");
+
+        function Context(indented, column, type, info, align, prev) {
+            this.indented = indented;
+            this.column = column;
+            this.type = type;
+            this.info = info;
+            this.align = align;
+            this.prev = prev;
+        }
+
+        function init() {
+
+            CodeMirror.defineMode('music', function () {
+                console.log(arguments);
+                return {
+                    startState: function (basecolumn) {
+                        console.log(arguments);
+
+                        return {
+                            tokenize: null,
+                            // context: new Context((basecolumn || 0) - indentUnit, 0, "top", null, false),
+                            indented: 0,
+                            startOfLine: true,
+                            prevToken: null
+                        };
+                    },
+
+                    token: function (stream, ctx) {
+                        var s = stream.string.toLowerCase();
+                        stream.pos = s.length + 1;
+
+                        if (s == 'musica') {
+                            return 'title'
+                        }
+
+                        if (s == 'tom') {
+                            return 'title'
+                        }
+
+                        if (s == 'estrofe') {
+                            return 'cifra';
+                        }
+
+                        return '';
+                    },
+
+                    indent: function () {
+                        console.log(arguments);
+
+                        return 0;
+                    }
+                }
+            });
+
+            // CodeMirror.registerHelper("hintWords", 'music', words(cKeywords));
+            // CodeMirror.defineMIME('music', {
+            //     name: "music",
+            //     helperType: 'music',
+            //     keywords: words(cKeywords),
+            //     // types: cTypes,
+            //     // blockKeywords: words(cBlockKeywords),
+            //     // defKeywords: words(cDefKeywords),
+            //     typeFirstDefinitions: true,
+            //     atoms: words("NULL true false"),
+            //     // isReservedIdentifier: cIsReservedIdentifier,
+            //     // hooks: {
+            //     //     "#": cppHook,
+            //     //     "*": pointerHook,
+            //     // },
+            //     modeProps: { fold: ["brace", "include"] }
+            // });
+
+            CodeMirror.fromTextArea(document.getElementById('textarea'), {
+                lineNumbers: true,
+                mode: 'music'
+            });
+        }
+    </script>
+
+</head>
+
+<body onload="init();">
+
+    <textarea id="textarea">
+Musica
+É teu povo
+
+Tom
+G
+    </textarea>
+
+</body>
+
+</html>
