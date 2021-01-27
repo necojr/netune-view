@@ -5,6 +5,7 @@ yum.define([
     class Mode extends Pi.Class {
 
         instances() {
+            this.name = 'music';
             this.lookup = {};
         }
 

@@ -1,5 +1,5 @@
-const staticDiscontinued = ['netune-v1.0', 'netune-v2.0', 'netune-v3.0'];
-const staticNetune = 'netune-v4.0';
+const staticDiscontinued = ['netune-v1.0', 'netune-v2.0', 'netune-v3.0', 'netune-v4.0', ];
+const staticNetune = 'netune-v5.0';
 var assets = [
     '/index.html',
     '/css/app.css',
@@ -16,6 +16,11 @@ var assets = [
     '/vendor/omni/client.js',
     '/modules/app.js',
     '/modules/config.js',
+    '/vendor/codemirror/codemirror.js',
+    '/vendor/codemirror/codemirror.css',
+    '/vendor/codemirror/editor.js',
+    '/vendor/codemirror/music.js',
+    '/vendor/codemirror/music.css',
 ];
 
 for (let i = 0; i < 50; i++) {

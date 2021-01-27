@@ -39,9 +39,6 @@ yum.define([
         }
 
         initComponents() {
-            this.musicChoose = new Music.Choose();
-            this.musicChoose.render(this.view.get('musicChoose'));
-
             this.musicPopup = new Music.Popup();
             this.musicPopup.render(this.view.get('musicPopup'));
 

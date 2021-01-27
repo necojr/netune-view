@@ -1,5 +1,7 @@
 yum.define([
-    Pi.Url.create('Music', '/parser.js')
+    Pi.Url.create('Music', '/parser.js'),
+    Pi.Url.create('Vendor', '/codemirror/editor.js'),
+    Pi.Url.create('Vendor', '/codemirror/music.js'),
 ], function (html) {
 
     class Control extends Pi.Component {
@@ -23,21 +25,35 @@ yum.define([
                     </div>
                 </div>
                 <div class="page-content">
-                    <textarea placeholder="\nMusica\nGrande é o Senhor\n\nTom\nA\n\nEstrofe\nA\nGrande é o senhor e muito digno de louvor\nD                  E\nNa cidade do nosso Deus, seu santo monte\nA\nAlegria de toda terra\n\nEstrofe\nA\nGrande é o senhor em quem nós temos a vitória\nD              E       A   \nQue nos ajuda contra o inimigo\nA                         Bm7     A/C#\nPor isso diante dele nos prostramos\n\nCoro\nA                      C#m\nQueremos o seu nome engrandecer\nA           A/C#       D             E            \nE agradecer-te por tua obra em nossa vida\nA                         C#m7\nConfiamos em teu infinito amor\n      D         A/C#        Bm7        E       A\nPois só tu és o Deus eterno sobre toda terra e céus" id="textarea" style="width: 100%; height: 100%"></textarea>
+                    <div at="editor"></div>
                 </div>
             </div>`);
+
+            this.editor = new CodeMirrorEditor({
+                mode: new CodeMirrorModeMusic()
+            });
         }
 
         viewDidLoad() {
+            this.loadModeMusic();
 
             super.viewDidLoad();
         }
 
+        loadModeMusic() {
+            var keywords = ['youtube', 'nome', 'musica', 'titulo', 'intro', 'tom', 'versao', 'parte', 'estrofe', 'ponte', 'coro'];
+
+            for (let i = 0; i < keywords.length; i++) {
+                this.editor.mode.addLookup(keywords[i], CodeMirrorModeMusicType.TITLE);
+            }
+        }
+
         set(musica) {
+            var parser = new Music.Parser();
             this.musica = musica;
 
             this.view.get('title').set(this.musica.nome);
-            this.view.get('textarea').set(musica.lyrics);
+            this.editor.set(parser.parse(musica.lyrics).text);
         }
 
         events(listen) {
@@ -65,7 +81,7 @@ yum.define([
                         if (this.musica.tom.length == 0) {
                             throw 'Informe o tom da música';
                         }
-                        
+
                         app.loading(true);
                         this.musica.save().ok(() => {
                             app.event.trigger('save:music', this.musica);
@@ -77,7 +93,7 @@ yum.define([
                         });
 
                     } catch (error) {
-                        app.notification('Atenção!', 'Cifra não esta formatada corretamente', error);
+                        app.notification('Atenção!', 'Cifra não esta formatada corretamente.', error.message);
                     }
                 },
 

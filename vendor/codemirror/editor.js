@@ -18,7 +18,7 @@ yum.define([
         createEditor(){
             this._mirror = CodeMirror.fromTextArea(this.view.get('textarea'), {
                 lineNumbers: true,
-                mode: this.mode
+                mode: this.mode.name
             });
         }
 
