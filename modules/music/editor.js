@@ -65,7 +65,7 @@ yum.define([
 
                     try {
                         var parser = new Music.Parser();
-                        var letra = this.view.textarea.get();
+                        var letra = this.editor.get();
 
                         var lyrics = parser.parse(letra);
                         this.musica.nome = lyrics.titulo;
