@@ -54,6 +54,7 @@ yum.define([
                         var lyrics = parser.parse(letra);
                         this.musica.nome = lyrics.titulo;
                         this.musica.versao = lyrics.versao;
+                        this.musica.youtube = lyrics.youtube;
                         this.musica.tom = lyrics.tom;
                         this.musica.lyrics = letra;
 

@@ -19,10 +19,10 @@ yum.define([
                         <div class="title" id="title">Título</div>
                         <div class="right">
                             <a href="javascript:void(0)" id="youtube" class="link back">
-                                <i class="ffab fa-youtube" style="font-size: 32px; color: #ff3300;"></i>
+                                <i class="ffab fa-youtube" style="color: #ff3300;"></i>
                             </a>
                             <a href="javascript:void(0)" id="trocaTom" class="link back">
-                                <i class="icon material-icons md-only">audiotrack</i>
+                                <i class="fas fa-music"></i>
                                 <span id="tom"></span>
                             </a>
                         </div>
@@ -31,7 +31,7 @@ yum.define([
                 <div at="slider" class="page-content"></div>
                 <div class="fab fab-extended fab-right-bottom">
                     <a id="editMusic" href="javascript:void(0)">
-                        <i class="icon material-icons md-only">edit</i>
+                        <i class="fas fa-file-word"></i>
                     </a>
                 </div>
             </div>`);
@@ -68,14 +68,25 @@ yum.define([
             this.lyrics = this.parser.parse(this.musica.lyrics);
             this.lyrics.trocarTom(this.musica.tom);
 
-            if (this.lyrics._youtube.length == 0) {
-                this.view.get('youtube').hide()
+            if (this.isValidYoutubeLink(this.lyrics.youtube)) {
+                this.view.get('youtube').show();
+            } else {
+                this.view.get('youtube').hide();
             }
             
             this.view.get('title').set(this.musica.nome);
             this.view.get('tom').set(this.musica.tom);
 
             this.slider.load(this.lyrics);
+        }
+
+        isValidYoutubeLink(link){
+            var id = this.getYoutubeId(link);
+            return Pi.Type.isString(id) && id.length > 0;
+        }
+
+        getYoutubeId(link){
+            return Pi.Url.create(link).getQuery('v');
         }
 
         events(listen) {
@@ -116,7 +127,7 @@ yum.define([
                                 </div>
                                 <div class="block">
                                     <div class="yt-container">
-                                        <iframe width="320" src="${this.lyrics._youtube}" frameborder="0" allowfullscreen class="video"></iframe>
+                                        <iframe width="320" src="https://www.youtube.com/embed/${this.getYoutubeId(this.lyrics.youtube)}" frameborder="0" allowfullscreen class="video"></iframe>
                                     </div>
                                 </div>
                             </div>`,

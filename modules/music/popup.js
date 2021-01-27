@@ -17,7 +17,7 @@ yum.define([
                         <div class="title">Music List</div>
                         <div class="right">
                             <a href="javascript:void(0)" id="add" class="link back">
-                                <i class="icon material-icons md-only" style="color: #6200ee;">add</i>
+                                <i class="fas fa-plus" style="color: #6200ee;"></i>
                             </a>
                         </div>
                     </div>

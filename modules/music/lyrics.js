@@ -92,6 +92,10 @@ yum.define([
             this._youtube = value[0];
         }
 
+        get youtube() {
+            return this._youtube;
+        }
+
         get tokens() {
             return this._tokens;
         }

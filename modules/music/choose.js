@@ -24,7 +24,7 @@ yum.define([
                             <div class="item-title-row">
                                 <div class="item-title">@{nome}</div>
                                 <div class="item-after" style="color: #6200ee;">
-                                  <i class="icon material-icons md-only">add</i>
+                                    <i class="fas fa-plus"></i>
                                 </div>
                             </div>
                             <div class="item-subtitle">@{versao}</div>

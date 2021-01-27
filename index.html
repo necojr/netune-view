@@ -34,13 +34,13 @@
 
     <!-- pillar framework -->
     <script src="vendor/pillar/jquery.js"></script>
-    <script src="vendor/pillar/pillar.js?v1.0.12" app="/modules/app.js" config="/modules/config.js" version="v1.0.12"></script>
+    <script src="vendor/pillar/pillar.js?v1.0.13" app="/modules/app.js" config="/modules/config.js" version="v1.0.13"></script>
 
     <!-- settings -->
     <script>
         window.settings = {
             builder: {
-                version: 'v1.0.12'
+                version: 'v1.0.13'
             }
         };
 
@@ -53,7 +53,7 @@
         }
     </script>
 
-    <script src="js/app.js?v1.0.12"></script>
+    <script src="js/app.js?v1.0.13"></script>
 </head>
 
 <body>
@@ -85,7 +85,7 @@
                         <span id="workspaceNome">Netune</span>
                     </span>
 
-                    <div id="changeUser" style="display: none; float: right;">
+                    <div id="changeUser" style="cursor: pointer; display: none; float: right;">
                         <img id="avatarUrl" src="#" style="width: 32px; background: rgba(255, 255, 255, 0.3);; padding: 4px; border-radius: 100%;">
                     </div>
                 </div>
@@ -94,14 +94,14 @@
             </div>
             <div class="fab fab-extended fab-center-bottom">
                 <a id="addMusic" href="javascript:void(0)">
-                    <i class="fas fa-list"></i>
+                    <i class="fas fa-list-ul"></i>
                     <div class="fab-text">Musicas</div>
                 </a>
             </div>
 
             <div class="fab fab-extended fab-right-bottom">
                 <a id="createMusic" href="javascript:void(0)">
-                    <i class="icon material-icons md-only">add</i>
+                    <i class="fas fa-plus"></i>
                 </a>
             </div>
 

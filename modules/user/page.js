@@ -16,7 +16,7 @@ yum.define([
                         <div class="title" id="title">Perfil</div>
                         <div class="right">
                             <a href="javascript:void(0)" id="save" class="link back">
-                                <i class="icon material-icons md-only">save</i>
+                                <i class="fas fa-save"></i>
                             </a>
                         </div>
                     </div>

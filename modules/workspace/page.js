@@ -17,7 +17,7 @@ yum.define([
                         <div class="title" id="title">Playlists</div>
                         <div class="right">
                             <a href="javascript:void(0)" id="create" class="link back">
-                                <i class="icon material-icons md-only">add</i>
+                                <i class="fas fa-plus"></i>
                             </a>
                         </div>
                     </div>
@@ -37,7 +37,7 @@ yum.define([
                             <div class="item-title-row">
                                 <div class="item-title">@{nome}</div>
                                 <!--<div class="item-after" data-name-op="delete" data-event-click="@{id}">
-                                    <i class="icon material-icons md-only">delete</i>
+                                    <i class="far fa-trash-alt"></i>
                                 </div>-->
                             </div>
                             <div class="item-subtitle">@{user.nome}</div>
