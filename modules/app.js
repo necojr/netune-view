@@ -141,9 +141,9 @@ yum.define([
 
         notification(title, subtitle = '', message = '') {
             var n = app.f7.notification.create({
-                title: 'Atenção!',
-                subtitle: 'Cifra não esta formatada corretamente',
-                text: error,
+                title: title,
+                subtitle: subtitle,
+                text: message,
                 closeButton: true,
             });
 
