@@ -75,7 +75,7 @@ yum.define([
                     automate.onInvalid(function (step) {
                         if (step == 0) this.reset().enable(false);
                         else throw {
-                            message: 'Linha ' + (i + 1) + ' está errada',
+                            message: 'Linha ' + (i + 1) + ' esta errada',
                             line: i + 1
                         };
                     });
