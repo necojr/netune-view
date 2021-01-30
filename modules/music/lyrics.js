@@ -180,7 +180,7 @@ yum.define([
 
         set parte(parte) {
             this._numParte++;
-            this.addEstrofe(`PARTE ${this._numEstrofe}`, this.clear(parte), 'PARTE');
+            this.addEstrofe(`PARTE ${this._numParte}`, this.clear(parte), 'PARTE');
         }
 
         set ponte(ponte) {
