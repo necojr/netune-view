@@ -19,7 +19,7 @@ yum.define([
                         <div class="title" id="title">Título</div>
                         <div class="right">
                             <a href="javascript:void(0)" id="save" class="link back">
-                                <i class="fas fa-save" style="font-size: 26px; color: #6200ee;"></i>
+                                <i class="fas fa-save" style="font-size: 26px!important; color: #6200ee;"></i>
                             </a>
                         </div>
                     </div>
