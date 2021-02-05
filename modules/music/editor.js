@@ -2,6 +2,7 @@ yum.define([
     Pi.Url.create('Music', '/parser.js'),
     Pi.Url.create('Vendor', '/codemirror/editor.js'),
     Pi.Url.create('Vendor', '/codemirror/music.js'),
+    Pi.Url.create('CifraClub', '/search.js')
 ], function (html) {
 
     class Control extends Pi.Component {
@@ -18,6 +19,9 @@ yum.define([
                         </div>
                         <div class="title" id="title">Título</div>
                         <div class="right">
+                            <a href="javascript:void(0)" id="import" class="link back">
+                                <i class="fas fa-search" style="font-size: 26px!important;"></i>
+                            </a>
                             <a href="javascript:void(0)" id="save" class="link back">
                                 <i class="fas fa-save" style="font-size: 26px!important; color: #6200ee;"></i>
                             </a>
@@ -60,6 +64,19 @@ yum.define([
             super.events(listen);
 
             listen({
+                '#import click'() {
+                    app.addPage(new CifraClub.Search()).event.listen('select', (musica) => {
+                        app.loading(true);
+                        CifraClub.Client.create().get(musica.url).ok((client) => {
+                            this.editor.set(client.lyrics);
+                        }).error(() => {
+                            app.notification('Atenção!', 'Sem conexão com a internet');
+                        }).done(() => {
+                            app.loading(false);
+                        });
+                    });
+                },
+
                 '#save click'() {
                     if (this.musica == null) return;
 

@@ -123,6 +123,10 @@ yum.define([
             n.open();
         }
 
+        prompt(title, text, ok, cn){
+            this.f7.dialog.prompt(text, title, ok, cn).open();
+        }
+
         saveWorkspace() {
             this.user.workspace.musicas = this.musicList.get();
 

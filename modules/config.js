@@ -29,6 +29,7 @@ Pi.App.config({
         'Lexicon': { base: 'Modules', url: '/lexicon' },
         'Workspace': { base: 'Modules', url: '/workspace' },
         'User': { base: 'Modules', url: '/user' },
+        'CifraClub': { base: 'Modules', url: '/cifraclub' },
 
         /**
          *  Vendor Configuration 
