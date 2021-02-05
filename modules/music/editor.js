@@ -75,11 +75,15 @@ yum.define([
                         this.musica.lyrics = letra;
 
                         if (this.musica.nome.length == 0) {
-                            throw 'Informe o nome da música';
+                            throw {
+                                message: 'Informe o nome da música'
+                            };
                         }
 
                         if (this.musica.tom.length == 0) {
-                            throw 'Informe o tom da música';
+                            throw {
+                                message: 'Informe o tom da música'
+                            };
                         }
 
                         app.loading(true);
