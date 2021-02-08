@@ -57,10 +57,6 @@ yum.define([
                 automates[i].onDone(function () {
                     const events = this.events;
                     lyrics.add(events[0], this.values);
-
-                    for (let j = 0; j < automates.length; j++) {
-                        automates[j].reset();
-                    }
                 });
             }
 

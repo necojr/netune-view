@@ -63,23 +63,54 @@ yum.define([
                 'G#': ['G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G']
             };
 
+            var escalaMaiorNaturalBemol = {
+                'A': ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab'],
+                'Bb': ['Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A'],
+                'B': ['B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb'],
+                'C': ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'],
+                'Db': ['Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B', 'C'],
+                'D': ['D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B', 'C', 'Db'],
+                'Eb': ['Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D'],
+                'E': ['E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb'],
+                'F': ['F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E'],
+                'Gb': ['Gb', 'G', 'Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F'],
+                'G': ['G', 'Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb'],
+                'Ab': ['Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G']
+            };
+
             var oldNotes = escalaMaiorNatural[this.tom.toUpperCase()];
             if (oldNotes == null) return;
 
+
             var newNotes = escalaMaiorNatural[newTom.toUpperCase()];
             if (newNotes == null) return;
+
+            var oldNotesBemol = escalaMaiorNaturalBemol[this.tom.toUpperCase()];
+            var newNotesBemol = escalaMaiorNaturalBemol[newTom.toUpperCase()];
 
             for (let i = 0; i < this._tokens.length; i++) {
                 const token = this._tokens[i];
 
                 if (token.isTitle) {
-                    token.value = token.value.replace(/([a-g]|[A-G])#?b?/g, (note) => {
+                    token.value = token.value.replace(/([a-g]|[A-G])#?b?/gi, (note) => {
+                        note = Pi.String.capital(note);
                         var index = oldNotes.indexOf(note);
+                        if (index == -1) {
+                            index = oldNotesBemol.indexOf(note);
+                            if (index == -1) return note;
+                            else return newNotesBemol[index];
+                        }
                         return newNotes[index];
                     });
                 } else {
-                    token.key = token.key.replace(/([a-g]|[A-G])#?b?/g, (note) => {
+                    token.key = token.key.replace(/([a-g]|[A-G])#?b?/gi, (note) => {
+                        note = Pi.String.capital(note);
                         var index = oldNotes.indexOf(note);
+                        if (index == -1) {
+                            index = oldNotesBemol.indexOf(note);
+                            if (index == -1) return note;
+                            else return newNotesBemol[index];
+                        }
                         return newNotes[index];
                     });
                 }
@@ -212,7 +243,7 @@ yum.define([
             return linha.length == 0;
         }
 
-        convertNoteToUpper(note){
+        convertNoteToUpper(note) {
             return note.replace(/([a-g]|[A-G])#?b?/g, (note) => {
                 return note.toUpperCase();
             });

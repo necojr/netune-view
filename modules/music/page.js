@@ -60,10 +60,14 @@ yum.define([
         }
 
         updateTom(newTom) {
-            // this.view.get('tom').set(newTom);
-            this.lyrics.trocarTom(newTom);
-            this.slider.load(this.lyrics);
-            this.musica.lyrics = this.lyrics.text;
+            try {
+                this.lyrics.trocarTom(newTom);
+                this.slider.load(this.lyrics);
+                this.musica.lyrics = this.lyrics.text;
+                // this.view.get('tom').set(newTom);
+            } catch (error) {
+                app.notification('Atenção!', error);
+            }
         }
 
         set(musica) {
