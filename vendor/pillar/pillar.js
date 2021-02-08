@@ -4406,7 +4406,7 @@ Pi.Namespace('Pi.Validator.Callback', class picallback extends Pi.Validator.Abst
     }
 
     save() {
-        if (this.id == undefined) return this.insert.apply(this, arguments)
+        if (this.id == undefined) return this.insert.apply(this, arguments);
         else if (this.id == 0) return this.insert.apply(this, arguments);
         else return this.update.apply(this, arguments);
     }
