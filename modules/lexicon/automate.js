@@ -5,7 +5,11 @@ yum.define([
     class Automato extends Pi.Class {
         instances() {
             this.nodes = [];
-            this.enabled = true;
+
+            this._stepNoop = {
+                from: 0,
+                to: 0
+            };
 
             this._stepStart = {
                 from: 0,
@@ -28,12 +32,6 @@ yum.define([
                 const event = events[i];
                 this.nodes[`${from}:${event}`] = to;
             }
-
-            return this;
-        }
-
-        enable(b) {
-            this.enabled = b;
 
             return this;
         }
@@ -62,7 +60,7 @@ yum.define([
             this._cbStart = cb;
         }
 
-        onRestart(cb){
+        onRestart(cb) {
             this._cbRestart = cb;
         }
 
@@ -79,8 +77,6 @@ yum.define([
         }
 
         trigger(event) {
-            if (!this.enabled) return this;
-
             if (!this.exist(this.current, event)) {
                 if (this._cbInvalid) this._cbInvalid(this.current);
 
@@ -91,7 +87,9 @@ yum.define([
             const from = this.current;
             const to = this.get(from, event);
 
-            if (from == this._stepStart.from && to == this._stepStart.to) {
+            if (from == this._stepNoop.from && to == this._stepNoop.to) {
+                return this;
+            } else if (from == this._stepStart.from && to == this._stepStart.to) {
                 this.events = [];
                 if (this._cbStart) this._cbStart(event);
             } else if (from == this._stepRestart.from && to == this._stepStart.to) {

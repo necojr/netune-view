@@ -19,15 +19,17 @@ yum.define([
             this.automates[0].add(4, 2, ['[text]']);
             this.automates[0].add(4, 1, this.keywordsMusic);
             this.automates[0].add(4, 3, this.keywordsInfo.concat(['[empty]', '[done]']));
+            this.automates[0].stepStart(0, 1);
             this.automates[0].stepRestart(4, 1);
             this.automates[0].stepFinish(3);
-            
+
             this.automates.push(new Lexicon.Automate({ name: 'info' }));
             this.automates[1].add(0, 0, this.keywordsMusic.concat(['[text]', '[empty]', '[done]']));
             this.automates[1].add(0, 1, this.keywordsInfo);
             this.automates[1].add(1, 2, ['[text]']);
             this.automates[1].add(2, 1, this.keywordsInfo);
             this.automates[1].add(2, 3, this.keywordsMusic.concat(['[text]', '[empty]', '[done]']));
+            this.automates[1].stepStart(0, 1);
             this.automates[1].stepRestart(2, 1);
             this.automates[1].stepFinish(3);
         }
@@ -35,30 +37,29 @@ yum.define([
         parse(text) {
             var lyrics = new Music.Lyrics();
             var linhas = text.replace(/\r/gi, '').split('\n');
-            var values = [];
             var automates = this.automates;
 
             for (let j = 0; j < automates.length; j++) {
-                automates[j].reset().enable(true);
+                automates[j].reset();
             }
 
             for (let i = 0; i < automates.length; i++) {
-                automates[i].onStart(() => {
-                    values = [];
+                automates[i].onStart(function () {
+                    this.values = [];
                 });
 
                 automates[i].onRestart(function () {
                     const events = this.events;
-                    lyrics.add(events[0], values);
-                    values = [];
+                    lyrics.add(events[0], this.values);
+                    this.values = [];
                 });
 
                 automates[i].onDone(function () {
                     const events = this.events;
-                    lyrics.add(events[0], values);
+                    lyrics.add(events[0], this.values);
 
                     for (let j = 0; j < automates.length; j++) {
-                        automates[j].reset().enable(true);
+                        automates[j].reset();
                     }
                 });
             }
@@ -73,12 +74,10 @@ yum.define([
                     const automate = automates[j];
 
                     automate.onStep(function () {
-                        values.push(linhaRaw);
+                        this.values.push(linhaRaw);
                     });
 
                     automate.onInvalid(function (step) {
-                        // if (step == 0) this.reset().enable(false);
-                        // else
                         throw {
                             message: 'Linha ' + (i + 1) + ' esta errada',
                             line: i + 1
