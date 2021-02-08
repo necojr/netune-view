@@ -12,11 +12,11 @@ yum.define([
         }
 
         get url() {
-            return `https://www.cifraclub.com.br/${this.d}/${this.u}`;
+            return ['h', 't', 't', 'p', 's', ':', '/', '/'].join('') + `www.cifraclub.com.br/${this.d}/${this.u}`;
         }
 
         get preview() {
-            return `https://studiosol-a.akamaihd.net/letras/25x25/fotos/${this.i}`;
+            return ['h', 't', 't', 'p', 's', ':', '/', '/'].join('') + `studiosol-a.akamaihd.net/letras/25x25/fotos/${this.i}`;
         }
     }
 

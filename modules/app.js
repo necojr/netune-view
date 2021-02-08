@@ -8,16 +8,11 @@ yum.define([
             this.pages = [];
 
             this.omniGroupName = 'netune:cifras';
-
-            this.omni = new Omni.Client();
-            this.omni.connect();
         }
 
         viewDidLoad() {
             this.initFramework7();
             this.loadModules();
-
-            super.viewDidLoad();
         }
 
         loadModules() {
@@ -40,6 +35,8 @@ yum.define([
                 this.initEvents();
 
                 this.loadUser();
+
+                super.viewDidLoad();
             });
         }
 
@@ -58,6 +55,9 @@ yum.define([
         }
 
         initComponents() {
+            this.omni = new Omni.Client();
+            this.omni.connect();
+
             this.musicPopup = new Music.Popup();
             this.musicPopup.render(this.view.get('musicPopup'));
 
