@@ -21,7 +21,7 @@ yum.define([
                         <div class="right">
                             <a href="javascript:void(0)" id="autoSlide" class="link back">
                                 <i id="autoSlideIcon" class="ffab fa-autoprefixer"></i>
-                                <img id="autoSlideImage" style="display: none;" width="48">
+                                <img id="autoSlideImage" style="display: none;" width="32">
                             </a>
                             <a href="javascript:void(0)" id="youtube" class="link back">
                                 <i class="ffab fa-youtube" style="color: #ff3300;"></i>
