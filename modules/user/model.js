@@ -22,7 +22,7 @@ yum.define([
             super.initWithJson(json);
 
             this.workspace = new Workspace.Model({
-                id: this.workspaceId
+                id: this.workspaceId || 1
             });
 
             return this;
