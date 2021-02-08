@@ -97,6 +97,10 @@ yum.define([
             super.events(listen);
         
             listen({
+                '#backPage click'() {
+                    app.popPage();
+                },
+                
                 '#textbox keyup'() { 
                     this.search(this.view.textbox.get());
                 },
