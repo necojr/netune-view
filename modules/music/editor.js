@@ -104,11 +104,11 @@ yum.define([
                         }
 
                         app.loading(true);
-                        this.musica.save().ok(() => {
+                        this.musica.save(app.user.uuid).ok(() => {
                             app.event.trigger('save:music', this.musica);
                             app.popPage();
-                        }).error(() => {
-                            app.notification('Atenção!', 'Sem conexão com a internet');
+                        }).error((msg) => {
+                            app.notification('Atenção!', msg);
                         }).done(() => {
                             app.loading(false);
                         });

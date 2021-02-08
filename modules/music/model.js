@@ -28,6 +28,7 @@ yum.define([
             super.actions(add)
             
             add({
+                update: 'POST:/update?userid=:uuid',
                 get: 'GET:/get?id=:id',
                 all: 'GET:/all'
             });
