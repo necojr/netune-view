@@ -1,5 +1,5 @@
-const staticDiscontinued = ['netune-v1.0', 'netune-v2.0', 'netune-v3.0', 'netune-v4.0', 'netune-v5.0'];
-const staticNetune = 'netune-v6.0';
+const staticDiscontinued = ['netune-v1.0', 'netune-v2.0', 'netune-v3.0', 'netune-v4.0', 'netune-v5.0', 'netune-v6.0'];
+const staticNetune = 'netune-v7.0';
 var assets = [
     '/index.html',
     '/css/app.css',

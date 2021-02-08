@@ -1,5 +1,5 @@
 yum.define([
-    
+
 ], function (html) {
 
     class Control extends Pi.Component {
@@ -69,7 +69,7 @@ yum.define([
             return pages;
         }
 
-        createRows(lyrics){
+        createRows(lyrics) {
             var rows = [];
 
             for (let i = 0; i < lyrics.tokens.length; i++) {
@@ -121,11 +121,11 @@ yum.define([
             return rows;
         }
 
-        createSlide(text){
+        createSlide(text) {
             this.view.get('slides').append(`<div class="swiper-slide" style="background: #fff"><pre>${text}</pre></div>`);
         }
 
-        createSwiper(){
+        createSwiper() {
             this._swiper = app.f7.swiper.create('#' + this.view.id, {
                 // effect: 'cube',
                 loop: true,
@@ -136,6 +136,14 @@ yum.define([
                 // direction: 'vertical',
                 // pagination: '.swiper-pagination'
             });
+
+            this._swiper.on('slideChange', () => {
+                this.event.trigger('change', this._swiper.activeIndex);
+            });
+        }
+
+        goto(n) {
+            this._swiper.slideTo(n);
         }
 
         destroy() {

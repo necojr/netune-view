@@ -1,7 +1,8 @@
 yum.define([
     Pi.Url.create('Music', '/slider.js'),
     Pi.Url.create('Music', '/parser.js'),
-    Pi.Url.create('Music', '/editor.js')
+    Pi.Url.create('Music', '/editor.js'),
+    Pi.Url.create('User', '/list.js')
 ], function (html) {
 
     class Control extends Pi.Component {
@@ -18,12 +19,15 @@ yum.define([
                         </div>
                         <div class="title" id="title">Título</div>
                         <div class="right">
+                            <a href="javascript:void(0)" id="autoSlide" class="link back">
+                                <i id="autoSlideIcon" class="ffab fa-autoprefixer"></i>
+                                <img id="autoSlideImage" style="display: none;" width="48">
+                            </a>
                             <a href="javascript:void(0)" id="youtube" class="link back">
                                 <i class="ffab fa-youtube" style="color: #ff3300;"></i>
                             </a>
                             <a href="javascript:void(0)" id="trocaTom" class="link back">
                                 <i class="fas fa-music"></i>
-                                <span id="tom"></span>
                             </a>
                         </div>
                     </div>
@@ -56,7 +60,7 @@ yum.define([
         }
 
         updateTom(newTom) {
-            this.view.get('tom').set(newTom);
+            // this.view.get('tom').set(newTom);
             this.lyrics.trocarTom(newTom);
             this.slider.load(this.lyrics);
             this.musica.lyrics = this.lyrics.text;
@@ -73,23 +77,23 @@ yum.define([
             } else {
                 this.view.get('youtube').hide();
             }
-            
+
             this.view.get('title').set(this.musica.nome);
-            this.view.get('tom').set(this.musica.tom);
+            // this.view.get('tom').set(this.musica.tom);
 
             this.slider.load(this.lyrics);
         }
 
-        isValidYoutubeLink(link){
+        isValidYoutubeLink(link) {
             var id = this.getYoutubeId(link);
             return Pi.Type.isString(id) && id.length > 0;
         }
 
-        getYoutubeId(link){
+        getYoutubeId(link) {
             return Pi.Url.create(link).getQuery('v');
         }
 
-        convertToYoutubeEmbedLink(link){
+        convertToYoutubeEmbedLink(link) {
             return ['h', 't', 't', 'p', 's', ':', '/', '/'].join('') + 'www.youtube.com/embed/' + this.getYoutubeId(link);
         }
 
@@ -99,6 +103,39 @@ yum.define([
             listen({
                 '#backPage click'() {
                     app.popPage();
+                },
+
+                '{slider} change'(slideNumber) {
+                    app.omni.trigger('new:tom', app.omniGroupName, {
+                        userid: app.user.id,
+                        slideNumber: slideNumber
+                    });
+                },
+
+                '#autoSlide click'() {
+                    var page = new User.List();
+                    app.addPage(page);
+
+                    page.event.listen('clear', () => {
+                        this.autoSliderUserId = 0;
+                        
+                        this.view.get('autoSlideIcon').show();
+                        this.view.get('autoSlideImage').hide();
+                    });
+
+                    page.event.listen('select', (user) => {
+                        this.autoSliderUserId = user.id;
+
+                        this.view.get('autoSlideIcon').hide();
+                        this.view.get('autoSlideImage').show();
+                        this.view.get('autoSlideImage').src = user.avatar;
+                    });
+                },
+
+                '(app.omni) music:change:slide'(payload){
+                    if (payload.userid == this.autoSliderUserId) {
+                        this.slider.goto(payload.slideNumber);
+                    }
                 },
 
                 '#editMusic click'() {
