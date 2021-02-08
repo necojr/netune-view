@@ -106,7 +106,7 @@ yum.define([
                 },
 
                 '{slider} change'(slideNumber) {
-                    app.omni.trigger('new:tom', app.omniGroupName, {
+                    app.omni.trigger('music:change:slide', app.omniGroupName, {
                         userid: app.user.id,
                         slideNumber: slideNumber
                     });
