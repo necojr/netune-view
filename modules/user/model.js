@@ -2,7 +2,7 @@ yum.define([
     Pi.Url.create('Workspace', '/model.js')
 ], function () {
 
-    class Model extends Pi.Model.Abstract{
+    class Model extends Pi.Model.Abstract {
 
         instances() {
 
@@ -30,21 +30,35 @@ yum.define([
 
         static current() {
             var promise = new Pi.Promise();
-            var model = new User.Model();
             var uuid = Pi.Localdb.get('user-uuid');
 
             if (uuid == null) {
-                uuid = Pi.Util.UUID();
-                model.nome = '';
-                model.avatar = '/images/avatar/001-man.png';
-                model.uuid = uuid;
-                Pi.Localdb.set('user-uuid', uuid);
-                model.insert().ok(promise.resolve, promise);
+                Model.createUser(promise);
             } else {
-                model.get(uuid).ok(promise.resolve, promise);
+                Model.fetchUser(uuid, promise);
             }
 
             return promise;
+        }
+
+        static createUser(promise) {
+            const uuid = Pi.Util.UUID();
+            var model = new User.Model();
+
+            model.uuid = uuid;
+            model.nome = '';
+            model.avatar = '/images/avatar/01.png';
+            Pi.Localdb.set('user-uuid', uuid);
+
+            model.insert().ok(promise.resolve, promise);
+        }
+
+        static fetchUser(uuid, promise) {
+            var model = new User.Model();
+
+            return model.get(uuid).ok(promise.resolve, promise).error(() => {
+                Model.createUser(promise);
+            });
         }
 
         loadWorkspace() {
@@ -53,7 +67,7 @@ yum.define([
             })
         }
 
-        changeWorkspace(wid){
+        changeWorkspace(wid) {
             this.workspaceId = wid;
 
             this.workspace = new Workspace.Model({
@@ -65,7 +79,7 @@ yum.define([
 
         actions(add) {
             super.actions(add)
-            
+
             add({
                 _changeWorkspace: 'POST:/changeWorkspace'
             });

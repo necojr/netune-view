@@ -172,7 +172,7 @@ yum.define([
                                 </div>
                                 <div class="block">
                                     <div class="yt-container">
-                                        <iframe width="320" src="${this.convertToYoutubeEmbedLink(this.lyrics.youtube)}" frameborder="0" allowfullscreen class="video"></iframe>
+                                        <iframe width="480" height="270" src="${this.convertToYoutubeEmbedLink(this.lyrics.youtube)}" frameborder="0" allowfullscreen class="video"></iframe>
                                     </div>
                                 </div>
                             </div>`,
