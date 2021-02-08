@@ -1,12 +1,24 @@
 yum.define([
-    
-], function(){
-    
+
+], function () {
+
     class Automato extends Pi.Class {
         instances() {
             this.nodes = [];
-            this.done = -1;
             this.enabled = true;
+
+            this._stepStart = {
+                from: 0,
+                to: 1
+            };
+
+            this._stepRestart = {
+                from: -1,
+                to: -1
+            };
+
+            this._stepFinish = -1;
+
 
             this.reset();
         }
@@ -20,20 +32,38 @@ yum.define([
             return this;
         }
 
-        enable(b){
+        enable(b) {
             this.enabled = b;
 
             return this;
         }
 
-        doneOn(done) {
-            this.done = done;
+        stepStart(from, to) {
+            this._stepStart = {
+                from: from,
+                to: to
+            };
+        }
+
+        stepRestart(from, to) {
+            this._stepRestart = {
+                from: from,
+                to: to
+            };
+        }
+
+        stepFinish(_stepFinish) {
+            this._stepFinish = _stepFinish;
 
             return this;
         }
 
         onStart(cb) {
             this._cbStart = cb;
+        }
+
+        onRestart(cb){
+            this._cbRestart = cb;
         }
 
         onStep(cb) {
@@ -61,11 +91,14 @@ yum.define([
             const from = this.current;
             const to = this.get(from, event);
 
-            if (from == 0 && to > 0) {
+            if (from == this._stepStart.from && to == this._stepStart.to) {
                 this.events = [];
                 if (this._cbStart) this._cbStart(event);
+            } else if (from == this._stepRestart.from && to == this._stepStart.to) {
+                if (this._cbRestart) this._cbRestart(event);
+                this.events = [];
             } else if (from > 0 && to > 0) {
-                if(this._cbStep) this._cbStep(event);
+                if (this._cbStep) this._cbStep(event);
             }
 
             this.events.push(event);
@@ -99,7 +132,7 @@ yum.define([
         }
 
         isDone() {
-            return this.current == this.done;
+            return this.current == this._stepFinish;
         }
     }
 

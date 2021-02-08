@@ -63,7 +63,7 @@ yum.define([
                 'G#': ['G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G']
             };
 
-            var oldNotes = escalaMaiorNatural[this._tom.toUpperCase()];
+            var oldNotes = escalaMaiorNatural[this.tom.toUpperCase()];
             if (oldNotes == null) return;
 
             var newNotes = escalaMaiorNatural[newTom.toUpperCase()];

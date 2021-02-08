@@ -68,7 +68,7 @@ yum.define([
                     app.addPage(new CifraClub.Search()).event.listen('select', (musica) => {
                         app.loading(true);
                         CifraClub.Client.create().get(musica.url).ok((client) => {
-                            this.editor.set(client.lyrics);
+                            this.editor.set(CifraClub.Converter.parse(client.lyrics));
                         }).error(() => {
                             app.notification('Atenção!', 'Sem conexão com a internet');
                         }).done(() => {

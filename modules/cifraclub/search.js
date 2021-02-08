@@ -1,5 +1,6 @@
 yum.define([
-    Pi.Url.create('CifraClub', '/client.js')
+    Pi.Url.create('CifraClub', '/client.js'),
+    Pi.Url.create('CifraClub', '/converter.js')
 ], function (html) {
 
     class Control extends Pi.Component {
