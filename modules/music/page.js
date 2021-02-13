@@ -54,7 +54,7 @@ yum.define([
             this.updateTom(newTom);
 
             this.musica.tom = newTom;
-            this.musica.save();
+            this.musica.save(app.user.uuid);
 
             app.omni.trigger('new:tom', app.omniGroupName, this.musica);
         }
