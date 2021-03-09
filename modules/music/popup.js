@@ -23,16 +23,12 @@ yum.define([
                     </div>
                 </div>
 
-                <div class="page-content" style="padding-bottom: 0px; height: auto; margin-top: 0px;">
-                    <div style="padding: 10px;">
-                        <div at="_tags"></div>
-                    </div>
-                </div>
-
-                <div class="page-content" style="padding-top: 0px;">
-                    <div style="margin-top: 0px;" class="list media-list no-hairlines"><ul at="_list"></ul></div>
+                <div class="page-content">
+                    <div class="list media-list no-hairlines"><ul at="_list"></ul></div>
                 </div>
             </div>`);
+
+            this.musics = new Pi.Collection();
 
             this._tags = new Pi.ElementList({
                 template: `<div class="chip" style="margin:4px;">
@@ -44,7 +40,9 @@ yum.define([
 
             this._list = new Pi.ElementList({
                 template: `<li>
-                    <a href="javascript:void(0)" class="item-link item-content" data-event-click="@{id}">
+                    <label class="item-checkbox item-content" data-event-click="@{id}">
+                        <input type="checkbox" name="123" value="@{nome}">
+                        <i class="icon icon-checkbox"></i>
                         <div class="item-inner">
                             <div class="item-title-row">
                                 <div class="item-title">@{nome}</div>
@@ -52,8 +50,19 @@ yum.define([
                             </div>
                             <div class="item-subtitle">@{versao}</div>
                         </div>
-                    </a>
+                    </label>
                 </li>`
+                // template: `<li>
+                //     <a href="javascript:void(0)" class="item-link item-content" data-event-click="@{id}">
+                //         <div class="item-inner">
+                //             <div class="item-title-row">
+                //                 <div class="item-title">@{nome}</div>
+                //                 <div class="item-after" style="color: #6200ee;"></div>
+                //             </div>
+                //             <div class="item-subtitle">@{versao}</div>
+                //         </div>
+                //     </a>
+                // </li>`
             });
         }
 
@@ -63,16 +72,16 @@ yum.define([
             super.viewDidLoad();
         }
 
-        open(){
+        open() {
             this.popup.open();
             this.load();
 
             return this;
         }
 
-        load(){
+        load() {
             var model = new Music.Model();
-            
+
             app.loading(true);
             model.all().ok((musicas) => {
                 app.loading(false);
@@ -92,28 +101,33 @@ yum.define([
             this.popup.close();
         }
 
-        events(listen){
+        events(listen) {
             super.events(listen);
-        
-            listen({
-                '{_list} click'(_, music) {
-                    if (this._tags.exist((m) => m.id == music.id)) return;
 
-                    music.tag = music.versao[0];
-                    this._tags.add(music);
+            listen({
+                '{_list} click'(_, music, el, e) {
+                    if (this.musics.exist(m => m.id == music.id)) {
+                        this.musics.remove(m => m.id == music.id);
+                        el.children[1].checked = false;
+                    } else {
+                        this.musics.push(music);
+                        el.children[1].checked = true;
+                    }
+
+                    e.stopPropagation();
+                    e.preventDefault();
                 },
 
-                '(app) save:music'(){
+                '(app) save:music'() {
                     this.load();
                 },
 
-                '{_tags} click'(_, music, el) {
-                    this._tags.remove(el.parent());
-                },
+                // '{_tags} click'(_, music, el) {
+                //     this._tags.remove(el.parent());
+                // },
 
-                '#add click'(){
-                    this.event.trigger('choose', this._tags.all());
-                    this._tags.clear();
+                '#add click'() {
+                    this.event.trigger('choose', this.musics);
                     this.destroy();
                 },
 

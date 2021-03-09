@@ -801,8 +801,24 @@ Pi.Constant = Pi.Namespace; Pi.Namespace('Pi.Class', class Class {
 
 }); Pi.Namespace('Pi.Collection', class picallback extends Array {
 
-    remove(i) {
-        this.splice(i, 1);
+    exist(cb){
+        for (let i = 0; i < this.length; i++) {
+            if(cb(this[i])){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    remove(cb) {
+        for (let i = 0; i < this.length; i++) {
+            if(cb(this[i])){
+                this.splice(i, 1);
+            }
+        }
+
+        return this;
     }
 
 }); Pi.Namespace('Pi.Hook', class picallback extends Pi.Class {
