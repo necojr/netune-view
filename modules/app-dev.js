@@ -15,6 +15,7 @@ yum.define([
         instances() {
             this.pages = [];
 
+            this.env = 'full';
             this.omniGroupName = 'netune:cifras';
 
             this.omni = new Omni.Client();
@@ -25,9 +26,14 @@ yum.define([
             this.initFramework7();
             this.initComponents();
 
+            this.initEnv();
             this.loadUser();
-            
+
             super.viewDidLoad();
+        }
+
+        servicesWillLoad() {
+
         }
 
         initFramework7() {
@@ -49,6 +55,13 @@ yum.define([
             this.musicList.render(this.view.get('musicList'));
         }
 
+        initEnv() {
+            if (this.env != 'full') {
+                this.view.findById('addMusic').hide();
+                this.view.findById('createMusic').hide();
+            }
+        }
+
         loadWorkspace() {
             app.loading(true);
             this.user.loadWorkspace().ok((workspace) => {
@@ -61,22 +74,24 @@ yum.define([
             });
         }
 
-        loadUser(){
+        loadUser() {
             app.loading(true);
             User.Model.current().ok((user) => {
                 app.loading(false);
 
                 this.setUser(user);
                 this.loadWorkspace();
+
+                super.servicesWillLoad();
             });
         }
-        
-        setUser(user){
+
+        setUser(user) {
             app.user = user;
             this.view.get('avatarUrl').src = user.avatar;
         }
 
-        setWorkspace(w){
+        setWorkspace(w) {
             this.view.get('workspaceNome').set(w.nome);
         }
 
@@ -123,7 +138,7 @@ yum.define([
             n.open();
         }
 
-        prompt(title, text, ok, cn){
+        prompt(title, text, ok, cn) {
             this.f7.dialog.prompt(text, title, ok, cn).open();
         }
 

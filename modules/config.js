@@ -45,5 +45,5 @@ Pi.App.config({
         url: 'wss://omni.ministerioatos239.com.br:775'
     },
 
-    services: ['Music']
+    services: ['Music', 'Workspace']
 });

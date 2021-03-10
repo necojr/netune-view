@@ -45,9 +45,17 @@ yum.define([
         }
 
         viewDidLoad() {
+            this.initEnv();
+            
             this.set(this.musica);
 
             super.viewDidLoad();
+        }
+
+        initEnv() {
+            if (app.env == 'minimal') {
+                this.view.findById('editMusic').hide();
+            }
         }
 
         trocarTom(newTom) {
@@ -122,7 +130,7 @@ yum.define([
 
                     page.event.listen('clear', () => {
                         this.autoSliderUserId = 0;
-                        
+
                         this.view.get('autoSlideIcon').show();
                         this.view.get('autoSlideImage').hide();
                     });
@@ -136,7 +144,7 @@ yum.define([
                     });
                 },
 
-                '(app.omni) music:change:slide'(payload){
+                '(app.omni) music:change:slide'(payload) {
                     if (payload.userid == this.autoSliderUserId) {
                         this.slider.goto(payload.slideNumber);
                     }

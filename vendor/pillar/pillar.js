@@ -5309,14 +5309,6 @@ Pi.Namespace('Pi.App', class piapp extends Pi.Component {
         return Pi.getConfig(param);
     }
 
-    servicesWillDownload() {
-
-    }
-
-    servicesDidDownload() {
-
-    }
-
     servicesWillLoad() {
         this.services.load(Pi.getConfig('services'));
         this.servicesDidLoad();
@@ -5372,15 +5364,10 @@ Pi.ready(function () {
             servicesUrl.push(Pi.Url.create(name, '/service.js'));
         }
 
-        // if (window['App']) {
-        //     window.app.servicesWillDownload();
-        // }
-
         yum.download(servicesUrl, function () {
             if (window.appWillLaunch != undefined) window.appWillLaunch();
 
             if (window['App']) {
-                // window.app.servicesDidDownload();
 
                 var appElement = document.getElementById('app');
                 if (appElement == null) {

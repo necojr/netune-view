@@ -6,13 +6,17 @@ yum.define([
 
         instances() {
             this.pages = [];
-
+            this.env = 'minimal';
             this.omniGroupName = 'netune:cifras';
         }
 
         viewDidLoad() {
             this.initFramework7();
             this.loadModules();
+        }
+
+        servicesWillLoad() {
+
         }
 
         loadModules() {
@@ -33,6 +37,7 @@ yum.define([
                 this.removeSplash();
                 this.initComponents();
                 this.initEvents();
+                this.initEnv();
 
                 this.loadUser();
 
@@ -74,6 +79,13 @@ yum.define([
             });
         }
 
+        initEnv() {
+            if (this.env != 'full') {
+                this.view.findById('addMusic').hide();
+                this.view.findById('createMusic').hide();
+            }
+        }
+
         loadUser() {
             app.loading(true);
             User.Model.current().ok((user) => {
@@ -81,6 +93,8 @@ yum.define([
 
                 this.setUser(user);
                 this.loadWorkspace();
+
+                super.servicesWillLoad();
             });
         }
 
