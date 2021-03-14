@@ -41,6 +41,9 @@ yum.define([
                 el: '#' + this.view.id,
                 name: 'Netune',
                 id: 'br.com.atos239.netune',
+                sortable: {
+                    moveElements: true
+                }
             });
         }
 
@@ -235,6 +238,10 @@ yum.define([
                     this.addPage(new Music.Page({
                         musica: musica
                     }));
+                },
+
+                '{musicList} reorder'(){
+                    this.saveWorkspace();
                 }
             });
         }

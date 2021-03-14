@@ -257,6 +257,10 @@ yum.define([
                     this.addPage(new Music.Page({
                         musica: musica
                     }));
+                },
+
+                '{musicList} reorder'(){
+                    this.saveWorkspace();
                 }
             });
         }

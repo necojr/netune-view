@@ -801,9 +801,9 @@ Pi.Constant = Pi.Namespace; Pi.Namespace('Pi.Class', class Class {
 
 }); Pi.Namespace('Pi.Collection', class picallback extends Array {
 
-    exist(cb){
+    exist(cb) {
         for (let i = 0; i < this.length; i++) {
-            if(cb(this[i])){
+            if (cb(this[i])) {
                 return true;
             }
         }
@@ -813,7 +813,7 @@ Pi.Constant = Pi.Namespace; Pi.Namespace('Pi.Class', class Class {
 
     remove(cb) {
         for (let i = 0; i < this.length; i++) {
-            if(cb(this[i])){
+            if (cb(this[i])) {
                 this.splice(i, 1);
             }
         }
@@ -2407,7 +2407,7 @@ Pi.Namespace('Pi.Seek', class piseek extends Pi.Class {
  * @class Pi.Cookie
  */
 Pi.Namespace('Pi.Cookie', class pidic extends Pi.Class {
-	/**
+    /**
      * Adiciona um cookie
      * 
      * @method add
@@ -4645,7 +4645,7 @@ Pi.Namespace('Pi.Validator.Callback', class picallback extends Pi.Validator.Abst
         return this.element.findElementById(id);
     }
 
-    get(id){
+    get(id) {
         return this.findById(id);
     }
 
@@ -4883,179 +4883,185 @@ Pi.Namespace('Pi.Validator.Callback', class picallback extends Pi.Validator.Abst
         }
     }
 
-}); Pi.Namespace('Pi.ControlList', class picontrolist extends Pi.Component{
-	instances() {
-		this.view = new Pi.View('<span></span>');
+}); Pi.Namespace('Pi.ControlList', class picontrolist extends Pi.Component {
+    instances() {
+        this.view = new Pi.View('<span></span>');
 
-		this.controls = [];
-	}
+        this.controls = [];
+    }
 
-	load(models, cb = null) {
-		for (let i = 0; i < models.length; i++) {
-			var control = this.add(models[i]);
+    load(models, cb = null) {
+        for (let i = 0; i < models.length; i++) {
+            var control = this.add(models[i]);
 
-			if (cb != null) {
-				cb(control);
-			}
-		}
+            if (cb != null) {
+                cb(control);
+            }
+        }
 
-		return this;
-	}
+        return this;
+    }
 
-	add(model, cb = null) {
-		var control = new this.factory(model);
-		var index = this.controls.length;
+    add(model, cb = null) {
+        var control = new this.factory(model);
+        var index = this.controls.length;
 
-		control.render(this.view.element);
-		this.controls.push(control);
+        control.render(this.view.element);
+        this.controls.push(control);
 
-		this.event.trigger('add', control);
-		control.event.listen('remove', () => {
-			this.controls.splice(index, 1);
-		});
+        this.event.trigger('add', control);
+        control.event.listen('remove', () => {
+            this.controls.splice(index, 1);
+        });
 
-		if (cb != null) cb(control);
+        if (cb != null) cb(control);
 
-		return control;
-	}
+        return control;
+    }
 
-	clear() {
-		for (let i = 0; i < this.controls.length; i++) {
-			this.controls[i].destroy();
-		}
+    clear() {
+        for (let i = 0; i < this.controls.length; i++) {
+            this.controls[i].destroy();
+        }
 
-		this.controls = [];
-		this.event.trigger('clear');
-	}
+        this.controls = [];
+        this.event.trigger('clear');
+    }
 
-	destroy() {
-		this.clear();
+    destroy() {
+        this.clear();
 
-		super.destroy();
-	}
-}); 
-(function(){
-	function walkTreeEvents(el, model, handler) {
-		if(el == undefined) return;
-		for (let i = 0; i < el.children.length; i++) {
-			processEvents(el.children[i], model, handler);
-			walkTreeEvents(el.children[i], model, handler);
-		}
-	}
+        super.destroy();
+    }
+});
+(function () {
+    function walkTreeEvents(el, model, handler) {
+        if (el == undefined) return;
+        for (let i = 0; i < el.children.length; i++) {
+            processEvents(el.children[i], model, handler);
+            walkTreeEvents(el.children[i], model, handler);
+        }
+    }
 
-	function processEvents(el, ctx, handler) {
-		var eventNames = extractEventNames(el);
-		loadEvents(el, eventNames, ctx, handler);
-	}
+    function processEvents(el, ctx, handler) {
+        var eventNames = extractEventNames(el);
+        loadEvents(el, eventNames, ctx, handler);
+    }
 
-	function loadEvents(el, eventNames, ctx, handler) {
-		for (let i = 0; i < eventNames.length; i++) {
-			addEvent(eventNames[i], el, ctx, handler);
-		}
-	}
+    function loadEvents(el, eventNames, ctx, handler) {
+        for (let i = 0; i < eventNames.length; i++) {
+            addEvent(eventNames[i], el, ctx, handler);
+        }
+    }
 
-	function addEvent(event, el, ctx, handler) {
+    function addEvent(event, el, ctx, handler) {
         el.addEventListener(event.name, function (e) {
             if (handler) {
                 handler.event.trigger(event.name, event.value, ctx, el, e);
             }
-		});
-	}
+        });
+    }
 
-	function extractEventNames(el) {
-		var names = [];
+    function extractEventNames(el) {
+        var names = [];
 
-		for (let i = 0; i < el.attributes.length; i++) {
-			let attr = el.attributes[i];
+        for (let i = 0; i < el.attributes.length; i++) {
+            let attr = el.attributes[i];
 
-			if (attr.name.indexOf('data-event') > -1) {
-				let event = attr.name.replace('data-event-', '');
-				if (event.length > 0) {
-					names.push({
-						original: attr.name,
+            if (attr.name.indexOf('data-event') > -1) {
+                let event = attr.name.replace('data-event-', '');
+                if (event.length > 0) {
+                    names.push({
+                        original: attr.name,
                         value: attr.value,
-						name: event
-					});
-				}
-			}
-		}
+                        name: event
+                    });
+                }
+            }
+        }
 
-		return names;
-	}
+        return names;
+    }
 
-	Pi.Namespace('Pi.ElementList', class ElementCollection extends Pi.Component {
-		instances() {
-			this.view = new Pi.View('<span></span>');
+    Pi.Namespace('Pi.ElementList', class ElementCollection extends Pi.Component {
+        instances() {
+            this.view = new Pi.View(this.containerHtml || '<span></span>');
 
-			this.isEmpty = true;
+            this.isEmpty = true;
             this.empty = '';
-            
+
             this._count = 0;
             this._models = [];
             this._handler = this;
-		}
-
-		viewDidLoad() {
-			this.clear();
-
-			super.viewDidLoad();
         }
-        
-        get length(){
+
+        viewDidLoad() {
+            this.clear();
+
+            super.viewDidLoad();
+        }
+
+        viewLoad(element) {
+            this.view.element = element;
+            this.view.rendered = true;
+            this.view.event.trigger('render', this);
+        }
+
+        get length() {
             return this._models.length;
         }
 
-        get models(){
+        get models() {
             return this._models;
         }
 
-        get(index){
+        get(index) {
             return this._models[index];
         }
 
-        all(){
+        all() {
             return this._models;
         }
 
-		unlisten() {
-			document.removeEventListener('DOMNodeInserted', this._hookInsertedNode);
-		}
+        unlisten() {
+            document.removeEventListener('DOMNodeInserted', this._hookInsertedNode);
+        }
 
-		listen() {
+        listen() {
             this._hookInsertedNode = (e) => {
                 var el = e.target;
                 el.model = this._models[this._count++];
-        
+
                 walkTreeEvents(el, el.model, this);
             };
 
-			document.addEventListener('DOMNodeInserted', this._hookInsertedNode);
-		}
+            document.addEventListener('DOMNodeInserted', this._hookInsertedNode);
+        }
 
-		add(models) {
-			if (!(models instanceof Array)) {
-				models = [models];
+        add(models) {
+            if (!(models instanceof Array)) {
+                models = [models];
             }
 
             for (let i = 0; i < models.length; i++) {
                 this._models.push(models[i]);
             }
 
-			if (this.isEmpty) {
-				this.view.element.html(this.empty);
-			}
+            if (this.isEmpty) {
+                this.view.element.html(this.empty);
+            }
 
-			this.listen();
+            this.listen();
 
-			var view = Pi.Tpl.render(models, this.template);
-			this.view.element.append(view);
+            var view = Pi.Tpl.render(models, this.template);
+            this.view.element.append(view);
 
-			this.unlisten();
+            this.unlisten();
 
-			this.isEmpty = false;
+            this.isEmpty = false;
         }
-        
-        remove(el){
+
+        remove(el) {
             for (let i = 0; i < this._models.length; i++) {
                 if (el.model.id == this._models[i].id) {
                     this._models.splice(i, 1);
@@ -5066,7 +5072,7 @@ Pi.Namespace('Pi.Validator.Callback', class picallback extends Pi.Validator.Abst
             }
         }
 
-        exist(cb){
+        exist(cb) {
             for (let i = 0; i < this._models.length; i++) {
                 if (cb(this._models[i])) return true;
             }
@@ -5078,30 +5084,30 @@ Pi.Namespace('Pi.Validator.Callback', class picallback extends Pi.Validator.Abst
             this._models = models;
             this._count = 0;
 
-			this.listen();
+            this.listen();
 
-			var view = Pi.Tpl.render(models, this.template);
-			this.view.element.html(view);
+            var view = Pi.Tpl.render(models, this.template);
+            this.view.element.html(view);
 
-			this.unlisten();
+            this.unlisten();
 
-			this.isEmpty = false;
-		}
+            this.isEmpty = false;
+        }
 
         clear() {
             this._models = [];
             this._count = 0;
-            
-			this.view.element.html(this.empty);
 
-			this.isEmpty = true;
-		}
+            this.view.element.html(this.empty);
 
-		destroy() {
+            this.isEmpty = true;
+        }
+
+        destroy() {
             this.unlisten();
-			super.destroy();
-		}
-	});
+            super.destroy();
+        }
+    });
 }()); Pi.Namespace('Pi.Services', class piapp extends Pi.Class {
 
     instances() {

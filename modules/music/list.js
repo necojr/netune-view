@@ -5,10 +5,10 @@ yum.define([
     class Control extends Pi.Component {
 
         instances() {
-            this.view = new Pi.View(`<div class="list media-list"><ul at="_list"></ul></div>`);
+            this.view = new Pi.View(`<div class="list media-list sortable sortable-enabled sortable-opposite"><ul at="_list"></ul></div>`);
 
             this._list = new Pi.ElementList({
-                template: `<li>
+                template: `<li data-position="@{position}">
                     <a href="javascript:void(0)" class="item-link item-content" data-name-op="open" data-event-click="@{id}">
                         <div class="item-media">
                             <i style="font-size: 24px;color: #6200ee;padding: 9px;" class="fas fa-music"></i>
@@ -23,8 +23,27 @@ yum.define([
                             <div class="item-subtitle">@{versao}</div>
                         </div>
                     </a>
+                    <div class="sortable-handler"></div>
                 </li>`
             });
+        }
+
+        viewDidLoad() {
+            app.f7.off('sortableSort').on('sortableSort', (listEl, index) => {
+                var musics = this._list.all();
+                var musicFrom = musics[index.from];
+                var musicTo = musics[index.to];
+
+                musics.splice(index.from, 1, musicTo);
+                musics.splice(index.to, 1, musicFrom);
+
+                this._list.clear();
+                this._list.load(musics);
+
+                this.event.trigger('reorder');
+            });
+
+            super.viewDidLoad();
         }
 
         add(music) {
