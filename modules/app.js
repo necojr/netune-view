@@ -181,17 +181,17 @@ yum.define([
             super.events(listen);
 
             listen({
-                '#changeUser click'() {
-                    this.addPage(new User.Page()).event.listen('update', () => {
-                        this.setUser(app.user);
-                    });
-                },
+                // '#changeUser click'() {
+                    // this.addPage(new User.Page()).event.listen('update', () => {
+                    //     this.setUser(app.user);
+                    // });
+                // },
 
-                '#changeWorkspace click'() {
-                    this.addPage(new Workspace.Page()).event.listen('select', () => {
-                        this.loadWorkspace()
-                    });
-                },
+                // '#changeWorkspace click'() {
+                    // this.addPage(new Workspace.Page()).event.listen('select', () => {
+                    //     this.loadWorkspace()
+                    // });
+                // },
 
                 '#addMusic click'() {
                     this.musicPopup.open();
